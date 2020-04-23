@@ -11,16 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class JavaIORegionRepository {
-    private final String REGION_REPOSITORY_PATH_WRITE = "src/main/resources/files/regions.txt";
-    private final String REGION_REPOSITORY_PATH_READ = "files/regions.txt";
+    private final String REGION_REPOSITORY_PATH = "src/main/resources/files/regions.txt";
     private final String DELIMITER = ",";
 
     public Region getById(Long id) {
         if (id == null) {
             return null;
         }
-        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(REGION_REPOSITORY_PATH_READ);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(REGION_REPOSITORY_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] split = line.split(DELIMITER);
@@ -37,8 +35,7 @@ public class JavaIORegionRepository {
 
     public List<Region> getAll() {
         List<Region> regions = new ArrayList<>();
-        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(REGION_REPOSITORY_PATH_READ);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(REGION_REPOSITORY_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] split = line.split(DELIMITER);
@@ -52,7 +49,7 @@ public class JavaIORegionRepository {
     }
 
     public Region save(Region region) {
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH_WRITE), StandardOpenOption.APPEND)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND)) {
             writer.append(String.valueOf(region.getId())).append(",").append(region.getName()).append('\n');
             writer.flush();
         } catch (IOException e) {
@@ -66,9 +63,7 @@ public class JavaIORegionRepository {
             return;
         }
         List<Region> filteredRegions = getAll().stream().filter(r -> !id.equals(r.getId())).collect(Collectors.toList());
-        System.out.println("filteredRegions: ");
-        System.out.println(filteredRegions);
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH_WRITE))) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
             for (Region region : filteredRegions) {
                 writer.append(String.valueOf(region.getId())).append(",").append(region.getName()).append('\n');
                 writer.flush();
@@ -79,12 +74,6 @@ public class JavaIORegionRepository {
     }
 
     public Region update(Region region) {
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH_WRITE), StandardOpenOption.APPEND)) {
-            writer.append(String.valueOf(region.getId())).append(",").append(region.getName()).append('\n');
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return region;
+        return save(region);
     }
 }
