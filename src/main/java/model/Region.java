@@ -5,20 +5,20 @@ public class Region {
     private String name;
 
     public Region() {
+        this("UNKNOWN");
+    }
 
+    public Region(String name) {
+        this(null, name);
     }
 
     public Region(Long id, String name) {
-        this.id = id;
         this.name = name;
+        this.id = id;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -27,6 +27,12 @@ public class Region {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setId(Long id) {
+        if (this.id == null) {
+            this.id = id;
+        }
     }
 
     @Override
