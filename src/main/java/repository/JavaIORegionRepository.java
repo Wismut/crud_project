@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class JavaIORegionRepository {
@@ -15,9 +16,7 @@ public class JavaIORegionRepository {
     private final String DELIMITER = ",";
 
     public Region getById(Long id) {
-        if (id == null) {
-            return null;
-        }
+        Objects.requireNonNull(id);
         try (BufferedReader reader = new BufferedReader(new FileReader(REGION_REPOSITORY_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -49,6 +48,7 @@ public class JavaIORegionRepository {
     }
 
     public Region save(Region region) {
+        Objects.requireNonNull(region);
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND)) {
             writer.append(String.valueOf(region.getId())).append(",").append(region.getName()).append('\n');
             writer.flush();
@@ -59,9 +59,7 @@ public class JavaIORegionRepository {
     }
 
     public void deleteBy(Long id) {
-        if (id == null) {
-            return;
-        }
+        Objects.requireNonNull(id);
         List<Region> filteredRegions = getAll().stream().filter(r -> !id.equals(r.getId())).collect(Collectors.toList());
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
             for (Region region : filteredRegions) {
