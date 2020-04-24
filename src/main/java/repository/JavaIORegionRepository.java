@@ -79,19 +79,27 @@ public class JavaIORegionRepository {
         }
     }
 
-    public Region update(Region region) {
+    public void update(Region region) {
         Objects.requireNonNull(region);
         if (region.getId() == null || getById(region.getId()) == null) {
-            return null;
+            return;
         }
-        Stream<Region> regionStream = getAll()
+        List<Region> allRegions = getAll();
+        Stream<Region> streamWithCurrentRegion = allRegions
                 .stream()
                 .filter(r -> region.getId().equals(r.getId()))
                 .map(r -> region);
-        Stream<Region> regionStream2 = getAll()
+        Stream<Region> streamWithoutCurrentRegion = allRegions
                 .stream()
                 .filter(r -> !region.getId().equals(r.getId()));
-        Stream<Region> concat = Stream.concat(regionStream, regionStream2);
-        return save(region);
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
+            String stringToWrite = Stream.concat(streamWithCurrentRegion, streamWithoutCurrentRegion)
+                    .map(r -> (r.getId() + DELIMITER + r.getName() + System.lineSeparator()))
+                    .reduce("", (a, b) -> a + b);
+                writer.write(stringToWrite);
+                writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

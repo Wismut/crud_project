@@ -18,7 +18,7 @@ public class Main {
         System.out.println(regionRepository.getAll());
         System.out.println("Region with id = 3 before update:");
         System.out.println(regionRepository.getById(3L));
-        System.out.println("Update with id = 3:");
+        System.out.println("Update with id = 3");
         regionRepository.update(new Region(3L, "RT"));
         System.out.println("Region with id = 3 after update:");
         System.out.println(regionRepository.getById(3L));
