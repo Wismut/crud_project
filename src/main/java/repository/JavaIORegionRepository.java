@@ -50,7 +50,8 @@ public class JavaIORegionRepository {
     public Region save(Region region) {
         Objects.requireNonNull(region);
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND)) {
-            writer.append(String.valueOf(region.getId())).append(",").append(region.getName()).append('\n');
+            writer.append(String.valueOf(region.getId())).append(DELIMITER).append(region.getName());
+            writer.newLine();
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,7 +64,8 @@ public class JavaIORegionRepository {
         List<Region> filteredRegions = getAll().stream().filter(r -> !id.equals(r.getId())).collect(Collectors.toList());
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
             for (Region region : filteredRegions) {
-                writer.append(String.valueOf(region.getId())).append(",").append(region.getName()).append('\n');
+                writer.append(String.valueOf(region.getId())).append(DELIMITER).append(region.getName());
+                writer.newLine();
                 writer.flush();
             }
         } catch (IOException e) {
