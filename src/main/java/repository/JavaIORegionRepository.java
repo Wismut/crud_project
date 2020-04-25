@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,7 +20,7 @@ public class JavaIORegionRepository {
     public Region getById(Long id) {
         Objects.requireNonNull(id);
         try {
-            return getAll()
+            return getAllRegions()
                     .stream()
                     .filter(r -> id.equals(r.getId()))
                     .findFirst()
@@ -38,8 +39,10 @@ public class JavaIORegionRepository {
         try {
             return Files.readAllLines(Paths.get(REGION_REPOSITORY_PATH))
                     .stream()
-                    .map(s -> s.split(DELIMITER))
-                    .map(s -> new Region(Long.parseLong(s[0]), s[1]))
+                    .map(s -> {
+                        String[] split = s.split(DELIMITER);
+                        return new Region(Long.parseLong(split[0]), split[1]);
+                    })
                     .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,17 +65,15 @@ public class JavaIORegionRepository {
     }
 
     private Long getIdForNewRecord() {
-        return getAll()
+        Optional<Long> result = getAllIds()
                 .stream()
-                .map(Region::getId)
-                .max(Long::compare)
-                .map(x -> x + 1)
-                .orElse(1L);
+                .max(Long::compare);
+        return result.isPresent() ? result.get() + 1 : 1L;
     }
 
     public void deleteBy(Long id) {
         Objects.requireNonNull(id);
-        List<Region> filteredRegions = getAll()
+        List<Region> filteredRegions = getAllRegions()
                 .stream()
                 .filter(r -> !id.equals(r.getId()))
                 .collect(Collectors.toList());
@@ -90,7 +91,8 @@ public class JavaIORegionRepository {
     public Region update(Region region) {
         Objects.requireNonNull(region);
         Objects.requireNonNull(region.getId());
-        List<Region> allRegions = getAll();
+        List<Region> allRegions = getAllRegions();
+        Objects.requireNonNull(allRegions);
         Stream<Region> streamWithCurrentRegion = allRegions
                 .stream()
                 .filter(r -> region.getId().equals(r.getId()))
@@ -102,11 +104,18 @@ public class JavaIORegionRepository {
             String stringToWrite = Stream.concat(streamWithCurrentRegion, streamWithoutCurrentRegion)
                     .map(r -> (r.getId() + DELIMITER + r.getName() + System.lineSeparator()))
                     .reduce("", (a, b) -> a + b);
-                writer.write(stringToWrite);
-                writer.flush();
+            writer.write(stringToWrite);
+            writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return region;
+    }
+
+    private List<Long> getAllIds() {
+        return getAllRegions()
+                .stream()
+                .map(r -> r.getId())
+                .collect(Collectors.toList());
     }
 }
