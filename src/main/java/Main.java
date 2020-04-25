@@ -30,6 +30,8 @@ public class Main {
         regionRepository.update(new Region(3L, "RT"));
         System.out.println("Region with id = 3 after update:");
         System.out.println(regionRepository.getById(3L));
+        System.out.println("All regions:");
+        System.out.println(regionRepository.getAll());
 
         Files.write(Paths.get("src/main/resources/files/regions.txt"), "1,UA\n2,YTR\n3,UK\n".getBytes());
     }

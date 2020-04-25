@@ -52,7 +52,7 @@ public class JavaIORegionRepository {
         Objects.requireNonNull(region);
         Long newId = createIdForNewRecord();
         region.setId(newId);
-        writeToDatabase(Collections.singletonList(region), true);
+        writeToDatabase(Collections.singletonList(region), StandardOpenOption.APPEND);
         return region;
     }
 
@@ -69,7 +69,7 @@ public class JavaIORegionRepository {
                 .stream()
                 .filter(r -> !id.equals(r.getId()))
                 .collect(Collectors.toList());
-        writeToDatabase(filteredRegions, false);
+        writeToDatabase(filteredRegions);
     }
 
     public Region update(Region region) {
@@ -88,7 +88,7 @@ public class JavaIORegionRepository {
                 .filter(r -> !region.getId().equals(r.getId()));
         List<Region> regions = Stream.concat(streamWithNewRegion, streamWithoutOldRegion)
                 .collect(Collectors.toList());
-        writeToDatabase(regions, false);
+        writeToDatabase(regions);
         return region;
     }
 
@@ -99,10 +99,9 @@ public class JavaIORegionRepository {
                 .collect(Collectors.toList());
     }
 
-    private void writeToDatabase(List<Region> regions, boolean isAppend) {
-        try (BufferedWriter writer = isAppend ?
-                Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND) :
-                Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
+    private void writeToDatabase(List<Region> regions, StandardOpenOption... openOptions) {
+        try (BufferedWriter writer =
+                     Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), openOptions)) {
             for (Region region : regions) {
                 writer.write(region.getId() + DELIMITER + region.getName());
                 writer.newLine();
