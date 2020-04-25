@@ -7,9 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,7 +50,7 @@ public class JavaIORegionRepository {
 
     public Region save(Region region) {
         Objects.requireNonNull(region);
-        Long newId = getIdForNewRecord();
+        Long newId = createIdForNewRecord();
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND)) {
             writer.append(String.valueOf(newId)).append(DELIMITER).append(region.getName());
             writer.newLine();
@@ -64,7 +62,7 @@ public class JavaIORegionRepository {
         return region;
     }
 
-    private Long getIdForNewRecord() {
+    private Long createIdForNewRecord() {
         Optional<Long> result = getAllIds()
                 .stream()
                 .max(Long::compare);
@@ -93,15 +91,12 @@ public class JavaIORegionRepository {
         Objects.requireNonNull(region.getId());
         List<Region> allRegions = getAllRegions();
         Objects.requireNonNull(allRegions);
-        Stream<Region> streamWithCurrentRegion = allRegions
-                .stream()
-                .filter(r -> region.getId().equals(r.getId()))
-                .map(r -> region);
+        Stream<Region> streamWithNewRegion = Collections.singletonList(region).stream();
         Stream<Region> streamWithoutCurrentRegion = allRegions
                 .stream()
                 .filter(r -> !region.getId().equals(r.getId()));
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
-            String stringToWrite = Stream.concat(streamWithCurrentRegion, streamWithoutCurrentRegion)
+            String stringToWrite = Stream.concat(streamWithNewRegion, streamWithoutCurrentRegion)
                     .map(r -> (r.getId() + DELIMITER + r.getName() + System.lineSeparator()))
                     .reduce("", (a, b) -> a + b);
             writer.write(stringToWrite);
@@ -115,7 +110,7 @@ public class JavaIORegionRepository {
     private List<Long> getAllIds() {
         return getAllRegions()
                 .stream()
-                .map(r -> r.getId())
+                .map(Region::getId)
                 .collect(Collectors.toList());
     }
 }
