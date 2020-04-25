@@ -1,8 +1,13 @@
 import model.Region;
 import repository.JavaIORegionRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         JavaIORegionRepository regionRepository = new JavaIORegionRepository();
         System.out.println("Region with id = 1:");
         System.out.println(regionRepository.getById(1L));
@@ -22,5 +27,9 @@ public class Main {
         regionRepository.update(new Region(3L, "RT"));
         System.out.println("Region with id = 3 after update:");
         System.out.println(regionRepository.getById(3L));
+
+        Files.copy(Paths.get("src/main/resources/files/regions2.txt"),
+                Paths.get("src/main/resources/files/regions.txt"),
+                StandardCopyOption.REPLACE_EXISTING);
     }
 }

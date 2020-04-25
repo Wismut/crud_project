@@ -31,6 +31,10 @@ public class JavaIORegionRepository {
     }
 
     public List<Region> getAll() {
+        return getAllRegions();
+    }
+
+    private List<Region> getAllRegions() {
         try {
             return Files.readAllLines(Paths.get(REGION_REPOSITORY_PATH))
                     .stream()
@@ -45,12 +49,7 @@ public class JavaIORegionRepository {
 
     public Region save(Region region) {
         Objects.requireNonNull(region);
-        Long newId = getAll()
-                .stream()
-                .map(Region::getId)
-                .max(Long::compare)
-                .map(x -> x + 1)
-                .orElse(1L);
+        Long newId = getIdForNewRecord();
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND)) {
             writer.append(String.valueOf(newId)).append(DELIMITER).append(region.getName());
             writer.newLine();
@@ -60,6 +59,15 @@ public class JavaIORegionRepository {
         }
         region.setId(newId);
         return region;
+    }
+
+    private Long getIdForNewRecord() {
+        return getAll()
+                .stream()
+                .map(Region::getId)
+                .max(Long::compare)
+                .map(x -> x + 1)
+                .orElse(1L);
     }
 
     public void deleteBy(Long id) {
@@ -79,11 +87,9 @@ public class JavaIORegionRepository {
         }
     }
 
-    public void update(Region region) {
+    public Region update(Region region) {
         Objects.requireNonNull(region);
-        if (region.getId() == null || getById(region.getId()) == null) {
-            return;
-        }
+        Objects.requireNonNull(region.getId());
         List<Region> allRegions = getAll();
         Stream<Region> streamWithCurrentRegion = allRegions
                 .stream()
@@ -101,5 +107,6 @@ public class JavaIORegionRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return region;
     }
 }
