@@ -75,8 +75,15 @@ public class JavaIORegionRepository {
     public Region update(Region region) {
         Objects.requireNonNull(region);
         Objects.requireNonNull(region.getId());
+        List<Region> allRegions = getAllRegions();
+        if (getAllRegions()
+                .stream()
+                .filter(r -> region.getId().equals(r.getId()))
+                .count() == 0) {
+            return region;
+        }
         Stream<Region> streamWithNewRegion = Stream.of(region);
-        Stream<Region> streamWithoutOldRegion = getAllRegions()
+        Stream<Region> streamWithoutOldRegion = allRegions
                 .stream()
                 .filter(r -> !region.getId().equals(r.getId()));
         List<Region> regions = Stream.concat(streamWithNewRegion, streamWithoutOldRegion)
