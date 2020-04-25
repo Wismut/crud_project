@@ -91,12 +91,13 @@ public class JavaIORegionRepository {
         Objects.requireNonNull(region.getId());
         List<Region> allRegions = getAllRegions();
         Objects.requireNonNull(allRegions);
-        Stream<Region> streamWithNewRegion = Collections.singletonList(region).stream();
-        Stream<Region> streamWithoutCurrentRegion = allRegions
+        Stream<Region> streamWithNewRegion = Collections.singletonList(region)
+                .stream();
+        Stream<Region> streamWithoutOldRegion = allRegions
                 .stream()
                 .filter(r -> !region.getId().equals(r.getId()));
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
-            String stringToWrite = Stream.concat(streamWithNewRegion, streamWithoutCurrentRegion)
+            String stringToWrite = Stream.concat(streamWithNewRegion, streamWithoutOldRegion)
                     .map(r -> (r.getId() + DELIMITER + r.getName() + System.lineSeparator()))
                     .reduce("", (a, b) -> a + b);
             writer.write(stringToWrite);
