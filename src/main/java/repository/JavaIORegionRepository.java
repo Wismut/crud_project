@@ -51,14 +51,8 @@ public class JavaIORegionRepository {
     public Region save(Region region) {
         Objects.requireNonNull(region);
         Long newId = createIdForNewRecord();
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND)) {
-            writer.append(String.valueOf(newId)).append(DELIMITER).append(region.getName());
-            writer.newLine();
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         region.setId(newId);
+        writeToDatabase(Collections.singletonList(region), true);
         return region;
     }
 
@@ -75,36 +69,19 @@ public class JavaIORegionRepository {
                 .stream()
                 .filter(r -> !id.equals(r.getId()))
                 .collect(Collectors.toList());
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
-            for (Region region : filteredRegions) {
-                writer.append(String.valueOf(region.getId())).append(DELIMITER).append(region.getName());
-                writer.newLine();
-                writer.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeToDatabase(filteredRegions, false);
     }
 
     public Region update(Region region) {
         Objects.requireNonNull(region);
         Objects.requireNonNull(region.getId());
-        List<Region> allRegions = getAllRegions();
-        Objects.requireNonNull(allRegions);
-        Stream<Region> streamWithNewRegion = Collections.singletonList(region)
-                .stream();
-        Stream<Region> streamWithoutOldRegion = allRegions
+        Stream<Region> streamWithNewRegion = Stream.of(region);
+        Stream<Region> streamWithoutOldRegion = getAllRegions()
                 .stream()
                 .filter(r -> !region.getId().equals(r.getId()));
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
-            String stringToWrite = Stream.concat(streamWithNewRegion, streamWithoutOldRegion)
-                    .map(r -> (r.getId() + DELIMITER + r.getName() + System.lineSeparator()))
-                    .reduce("", (a, b) -> a + b);
-            writer.write(stringToWrite);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<Region> regions = Stream.concat(streamWithNewRegion, streamWithoutOldRegion)
+                .collect(Collectors.toList());
+        writeToDatabase(regions, false);
         return region;
     }
 
@@ -113,5 +90,19 @@ public class JavaIORegionRepository {
                 .stream()
                 .map(Region::getId)
                 .collect(Collectors.toList());
+    }
+
+    private void writeToDatabase(List<Region> regions, boolean isAppend) {
+        try (BufferedWriter writer = isAppend ?
+                Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH), StandardOpenOption.APPEND) :
+                Files.newBufferedWriter(Paths.get(REGION_REPOSITORY_PATH))) {
+            for (Region region : regions) {
+                writer.write(region.getId() + DELIMITER + region.getName());
+                writer.newLine();
+                writer.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
