@@ -45,7 +45,7 @@ public class JavaIORegionRepository {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public Region save(Region region) {

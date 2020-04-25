@@ -11,8 +11,12 @@ public class Main {
         JavaIORegionRepository regionRepository = new JavaIORegionRepository();
         System.out.println("Region with id = 1:");
         System.out.println(regionRepository.getById(1L));
+        System.out.println("All regions:");
+        System.out.println(regionRepository.getAll());
         System.out.println("Region 'AL' was added:");
         System.out.println(regionRepository.save(new Region("AL")));
+        System.out.println("All regions:");
+        System.out.println(regionRepository.getAll());
         System.out.println("Region 'AW' was added:");
         System.out.println(regionRepository.save(new Region("AW")));
         System.out.println("All regions:");
