@@ -106,9 +106,13 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
                         DELIMITER +
                         post.getContent() +
                         DELIMITER +
-                        post.getCreated() +
+                        (post.getCreated() == null ?
+                                convertLocalDateTimeToSeconds(LocalDateTime.now()) :
+                                convertLocalDateTimeToSeconds(post.getCreated())) +
                         DELIMITER +
-                        post.getUpdated());
+                        (post.getUpdated() == null ?
+                                convertLocalDateTimeToSeconds(LocalDateTime.now()) :
+                                convertLocalDateTimeToSeconds(post.getUpdated())));
                 writer.newLine();
                 writer.flush();
             }
@@ -134,5 +138,9 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
     private LocalDateTime convertMillisecondsToLocalDateTime(long seconds) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(seconds * 1000),
                 ZoneId.of(ZoneOffset.UTC.getId()));
+    }
+
+    private long convertLocalDateTimeToSeconds(LocalDateTime dateTime) {
+        return dateTime.toEpochSecond(ZoneOffset.UTC);
     }
 }
