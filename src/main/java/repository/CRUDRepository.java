@@ -5,6 +5,8 @@ import java.util.List;
 public interface CRUDRepository<T> {
     String REPOSITORY_PATH = "src/main/resources/files";
     String DELIMITER = ",";
+    String PREFIX = "{";
+    String SUFFIX = "}";
 
     T getById(Long id);
 
