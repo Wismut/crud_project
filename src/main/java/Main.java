@@ -15,9 +15,7 @@ import java.util.Collections;
 public class Main {
     public static void main(String[] args) throws IOException {
         testRegions();
-
-//        testPosts();
-
+        testPosts();
         testUsers();
     }
 
@@ -110,6 +108,6 @@ public class Main {
         System.out.println(userRepository.getAll());
 
         Files.write(Paths.get("src/main/resources/files/users.txt"),
-                "1,content1,1587897426,{1,3},1\n2,content2,1587893426,{1},2\n5,fn,ln,{3},1\n6,name_random,smth,{2},3\n".getBytes());
+                "1,content1,1587897426,{1,3},1\n2,content2,1587893426,{1},2\n5,fn,ln,{3},1\n3,name_random,smth,{2},3\n".getBytes());
     }
 }

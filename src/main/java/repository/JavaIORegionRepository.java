@@ -13,14 +13,17 @@ import java.util.stream.Collectors;
 public class JavaIORegionRepository implements CrudRepository<Region> {
     private final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.txt";
 
+    @Override
     public Region getById(Long id) {
         return getRegionById(id);
     }
 
+    @Override
     public List<Region> getAll() {
         return getAllRegions();
     }
 
+    @Override
     public Region save(Region region) {
         Objects.requireNonNull(region);
         Long newId = createIdForNewRecord();
@@ -29,6 +32,7 @@ public class JavaIORegionRepository implements CrudRepository<Region> {
         return region;
     }
 
+    @Override
     public void deleteBy(Long id) {
         Objects.requireNonNull(id);
         List<Region> filteredRegions = getAllRegions()
@@ -38,6 +42,7 @@ public class JavaIORegionRepository implements CrudRepository<Region> {
         writeToDatabase(filteredRegions);
     }
 
+    @Override
     public Region update(Region region) {
         Objects.requireNonNull(region);
         Objects.requireNonNull(region.getId());

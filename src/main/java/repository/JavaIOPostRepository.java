@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class JavaIOPostRepository implements CrudRepository<Post> {
-    private final String POST_REPOSITORY_PATH = REPOSITORY_PATH + "/posts.txt";
+    private static final String POST_REPOSITORY_PATH = REPOSITORY_PATH + "/posts.txt";
 
     @Override
     public Post getById(Long id) {
@@ -50,11 +50,10 @@ public class JavaIOPostRepository implements CrudRepository<Post> {
     public Post update(Post post) {
         Objects.requireNonNull(post);
         Objects.requireNonNull(post.getId());
-        List<Post> allPosts = getAllPosts();
         if (getPostById(post.getId()) == null) {
             return post;
         }
-        List<Post> filteredPosts = allPosts
+        List<Post> filteredPosts = getAllPosts()
                 .stream()
                 .filter(p -> !post.getId().equals(p.getId()))
                 .collect(Collectors.toList());
@@ -98,8 +97,9 @@ public class JavaIOPostRepository implements CrudRepository<Post> {
     private void writeToDatabase(List<Post> posts, StandardOpenOption... openOptions) {
         try (BufferedWriter writer =
                      Files.newBufferedWriter(Paths.get(POST_REPOSITORY_PATH), openOptions)) {
+            StringJoiner stringJoiner;
             for (Post post : posts) {
-                StringJoiner stringJoiner = new StringJoiner(DELIMITER);
+                stringJoiner = new StringJoiner(DELIMITER);
                 stringJoiner
                         .add(post.getId().toString())
                         .add(post.getContent())
@@ -122,7 +122,7 @@ public class JavaIOPostRepository implements CrudRepository<Post> {
         Optional<Long> result = getAllIds()
                 .stream()
                 .max(Long::compare);
-        return result.isPresent() ? result.get() + 1 : 1L;
+        return result.map(x -> x + 1).orElse(1L);
     }
 
     private List<Long> getAllIds() {

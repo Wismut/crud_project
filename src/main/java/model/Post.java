@@ -2,6 +2,7 @@ package model;
 
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Post {
     private Long id;
@@ -62,13 +63,14 @@ public class Post {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Post post = (Post) o;
-
-        return id != null ? id.equals(post.id) : post.id == null;
-
+        return Objects.equals(id, post.id);
     }
 
     @Override

@@ -11,9 +11,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class JavaIOUserRepository implements CrudRepository<User> {
-    private static final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
-    private JavaIOPostRepository postRepository = new JavaIOPostRepository();
-    private JavaIORegionRepository regionRepository = new JavaIORegionRepository();
+    private final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
+    private final JavaIOPostRepository postRepository = new JavaIOPostRepository();
+    private final JavaIORegionRepository regionRepository = new JavaIORegionRepository();
 
     @Override
     public User getById(Long id) {
@@ -45,20 +45,19 @@ public class JavaIOUserRepository implements CrudRepository<User> {
     }
 
     @Override
-    public User update(User region) {
-        Objects.requireNonNull(region);
-        Objects.requireNonNull(region.getId());
-        List<User> allRegions = getAllUsers();
-        if (getUserById(region.getId()) == null) {
-            return region;
+    public User update(User user) {
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(user.getId());
+        if (getUserById(user.getId()) == null) {
+            return user;
         }
-        List<User> filteredUsers = allRegions
+        List<User> filteredUsers = getAllUsers()
                 .stream()
-                .filter(r -> !region.getId().equals(r.getId()))
+                .filter(u -> !user.getId().equals(u.getId()))
                 .collect(Collectors.toList());
-        filteredUsers.add(region);
+        filteredUsers.add(user);
         writeToDatabase(filteredUsers);
-        return region;
+        return user;
     }
 
     private User getUserById(Long id) {
@@ -97,8 +96,9 @@ public class JavaIOUserRepository implements CrudRepository<User> {
     private void writeToDatabase(List<User> users, StandardOpenOption... openOptions) {
         try (BufferedWriter writer =
                      Files.newBufferedWriter(Paths.get(USER_REPOSITORY_PATH), openOptions)) {
+            StringJoiner stringJoiner;
             for (User user : users) {
-                StringJoiner stringJoiner = new StringJoiner(DELIMITER);
+                stringJoiner = new StringJoiner(DELIMITER);
                 stringJoiner
                         .add(user.getId().toString())
                         .add(user.getFirstName())
@@ -121,7 +121,7 @@ public class JavaIOUserRepository implements CrudRepository<User> {
         Optional<Long> result = getAllIds()
                 .stream()
                 .max(Long::compare);
-        return result.isPresent() ? result.get() + 1 : 1L;
+        return result.map(x -> x + 1).orElse(1L);
     }
 
     private List<Long> getAllIds() {
@@ -130,5 +130,4 @@ public class JavaIOUserRepository implements CrudRepository<User> {
                 .map(User::getId)
                 .collect(Collectors.toList());
     }
-
 }
