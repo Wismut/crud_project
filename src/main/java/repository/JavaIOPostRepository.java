@@ -44,7 +44,7 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
         Objects.requireNonNull(id);
         List<Post> filteredPosts = getAllPosts()
                 .stream()
-                .filter(r -> !id.equals(r.getId()))
+                .filter(p -> !id.equals(p.getId()))
                 .collect(Collectors.toList());
         writeToDatabase(filteredPosts);
     }
@@ -53,13 +53,13 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
     public Post update(Post post) {
         Objects.requireNonNull(post);
         Objects.requireNonNull(post.getId());
-        List<Post> allRegions = getAllPosts();
+        List<Post> allPosts = getAllPosts();
         if (getPostById(post.getId()) == null) {
             return post;
         }
-        List<Post> filteredPosts = allRegions
+        List<Post> filteredPosts = allPosts
                 .stream()
-                .filter(r -> !post.getId().equals(r.getId()))
+                .filter(p -> !post.getId().equals(p.getId()))
                 .collect(Collectors.toList());
         filteredPosts.add(post);
         writeToDatabase(filteredPosts);
@@ -71,7 +71,7 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
         try {
             return getAllPosts()
                     .stream()
-                    .filter(r -> id.equals(r.getId()))
+                    .filter(p -> id.equals(p.getId()))
                     .findFirst()
                     .orElse(null);
         } catch (Exception e) {
