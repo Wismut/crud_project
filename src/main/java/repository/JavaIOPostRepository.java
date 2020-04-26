@@ -11,10 +11,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JavaIOPostRepository implements CRUDRepository<Post> {
@@ -102,17 +99,17 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
         try (BufferedWriter writer =
                      Files.newBufferedWriter(Paths.get(POST_REPOSITORY_PATH), openOptions)) {
             for (Post post : posts) {
-                writer.write(post.getId() +
-                        DELIMITER +
-                        post.getContent() +
-                        DELIMITER +
-                        (post.getCreated() == null ?
-                                convertLocalDateTimeToSeconds(LocalDateTime.now()) :
-                                convertLocalDateTimeToSeconds(post.getCreated())) +
-                        DELIMITER +
-                        (post.getUpdated() == null ?
-                                convertLocalDateTimeToSeconds(LocalDateTime.now()) :
-                                convertLocalDateTimeToSeconds(post.getUpdated())));
+                StringJoiner stringJoiner = new StringJoiner(DELIMITER);
+                stringJoiner
+                        .add(post.getId().toString())
+                        .add(post.getContent())
+                        .add(post.getCreated() == null ?
+                                String.valueOf(convertLocalDateTimeToSeconds(LocalDateTime.now())) :
+                                String.valueOf(convertLocalDateTimeToSeconds(post.getCreated())))
+                        .add(post.getUpdated() == null ?
+                                String.valueOf(convertLocalDateTimeToSeconds(LocalDateTime.now())) :
+                                String.valueOf(convertLocalDateTimeToSeconds(post.getUpdated())));
+                writer.write(stringJoiner.toString());
                 writer.newLine();
                 writer.flush();
             }
