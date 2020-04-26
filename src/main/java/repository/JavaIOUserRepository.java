@@ -10,7 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JavaIOUserRepository implements CRUDRepository<User> {
+public class JavaIOUserRepository implements CrudRepository<User> {
     private static final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
     private JavaIOPostRepository postRepository = new JavaIOPostRepository();
     private JavaIORegionRepository regionRepository = new JavaIORegionRepository();

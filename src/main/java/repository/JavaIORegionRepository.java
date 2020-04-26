@@ -10,7 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JavaIORegionRepository implements CRUDRepository<Region> {
+public class JavaIORegionRepository implements CrudRepository<Region> {
     private final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.txt";
 
     public Region getById(Long id) {
@@ -107,6 +107,6 @@ public class JavaIORegionRepository implements CRUDRepository<Region> {
         Optional<Long> result = getAllIds()
                 .stream()
                 .max(Long::compare);
-        return result.isPresent() ? result.get() + 1 : 1L;
+        return result.map(x -> x + 1).orElse(1L);
     }
 }
