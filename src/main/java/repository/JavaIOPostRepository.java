@@ -2,16 +2,22 @@ package repository;
 
 import model.Post;
 
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class JavaIOPostRepository implements CRUDRepository<Post> {
     private final String POST_REPOSITORY_PATH = REPOSITORY_PATH + "/posts.txt";
 
     @Override
     public Post getById(Long id) {
-        return null;
+        return getPostById(id);
     }
 
     @Override
@@ -49,6 +55,20 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
     }
 
     private List<Post> getAllPosts() {
-        return null;
+        try {
+            return Files.readAllLines(Paths.get(POST_REPOSITORY_PATH))
+                    .stream()
+                    .map(s -> {
+                        String[] split = s.split(DELIMITER);
+                        return new Post(Long.parseLong(split[0]),
+                                split[1],
+                                LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(split[2])), ZoneId.systemDefault()),
+                                LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(split[3])), ZoneId.systemDefault()));
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 }

@@ -1,24 +1,26 @@
 package model;
 
 
+import java.time.LocalDateTime;
+
 public class Post {
     private Long id;
     private String content;
-    private Long created;
-    private Long updated;
+    private LocalDateTime created;
+    private LocalDateTime updated;
 
     public Post() {
 
     }
 
-    public Post(Long id, String content, Long created, Long updated) {
+    public Post(Long id, String content, LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.content = content;
         this.created = created;
         this.updated = updated;
     }
 
-    public Post(String content, Long created, Long updated) {
+    public Post(String content, LocalDateTime created, LocalDateTime updated) {
         this.content = content;
         this.created = created;
         this.updated = updated;
@@ -40,19 +42,35 @@ public class Post {
         this.content = content;
     }
 
-    public Long getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Long created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public Long getUpdated() {
+    public LocalDateTime getUpdated() {
         return updated;
     }
 
-    public void setUpdated(Long updated) {
+    public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Post post = (Post) o;
+
+        return id != null ? id.equals(post.id) : post.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
