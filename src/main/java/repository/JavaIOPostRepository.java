@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -87,8 +88,8 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
                         String[] split = s.split(DELIMITER);
                         return new Post(Long.parseLong(split[0]),
                                 split[1],
-                                LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(split[2])), ZoneId.systemDefault()),
-                                LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(split[3])), ZoneId.systemDefault()));
+                                convertMillisecondsToLocalDateTime(Long.parseLong(split[2])),
+                                convertMillisecondsToLocalDateTime(Long.parseLong(split[3])));
                     })
                     .collect(Collectors.toList());
         } catch (Exception e) {
@@ -128,5 +129,10 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
                 .stream()
                 .map(Post::getId)
                 .collect(Collectors.toList());
+    }
+
+    private LocalDateTime convertMillisecondsToLocalDateTime(long seconds) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(seconds * 1000),
+                ZoneId.of(ZoneOffset.UTC.getId()));
     }
 }
