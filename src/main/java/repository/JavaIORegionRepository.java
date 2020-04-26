@@ -10,45 +10,15 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JavaIORegionRepository {
-    private final String REGION_REPOSITORY_PATH = "src/main/resources/files/regions.txt";
-    private final String DELIMITER = ",";
+public class JavaIORegionRepository implements CRUDRepository<Region> {
+    private final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.txt";
 
     public Region getById(Long id) {
         return getRegionById(id);
     }
 
-    private Region getRegionById(Long id) {
-        Objects.requireNonNull(id);
-        try {
-            return getAllRegions()
-                    .stream()
-                    .filter(r -> id.equals(r.getId()))
-                    .findFirst()
-                    .orElse(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public List<Region> getAll() {
         return getAllRegions();
-    }
-
-    private List<Region> getAllRegions() {
-        try {
-            return Files.readAllLines(Paths.get(REGION_REPOSITORY_PATH))
-                    .stream()
-                    .map(s -> {
-                        String[] split = s.split(DELIMITER);
-                        return new Region(Long.parseLong(split[0]), split[1]);
-                    })
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
     }
 
     public Region save(Region region) {
@@ -57,13 +27,6 @@ public class JavaIORegionRepository {
         region.setId(newId);
         writeToDatabase(Collections.singletonList(region), StandardOpenOption.APPEND);
         return region;
-    }
-
-    private Long createIdForNewRecord() {
-        Optional<Long> result = getAllIds()
-                .stream()
-                .max(Long::compare);
-        return result.isPresent() ? result.get() + 1 : 1L;
     }
 
     public void deleteBy(Long id) {
@@ -109,5 +72,41 @@ public class JavaIORegionRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Region getRegionById(Long id) {
+        Objects.requireNonNull(id);
+        try {
+            return getAllRegions()
+                    .stream()
+                    .filter(r -> id.equals(r.getId()))
+                    .findFirst()
+                    .orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private List<Region> getAllRegions() {
+        try {
+            return Files.readAllLines(Paths.get(REGION_REPOSITORY_PATH))
+                    .stream()
+                    .map(s -> {
+                        String[] split = s.split(DELIMITER);
+                        return new Region(Long.parseLong(split[0]), split[1]);
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    private Long createIdForNewRecord() {
+        Optional<Long> result = getAllIds()
+                .stream()
+                .max(Long::compare);
+        return result.isPresent() ? result.get() + 1 : 1L;
     }
 }
