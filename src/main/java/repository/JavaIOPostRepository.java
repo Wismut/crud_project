@@ -40,12 +40,29 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
 
     @Override
     public void deleteBy(Long id) {
-
+        Objects.requireNonNull(id);
+        List<Post> filteredPosts = getAllPosts()
+                .stream()
+                .filter(r -> !id.equals(r.getId()))
+                .collect(Collectors.toList());
+        writeToDatabase(filteredPosts);
     }
 
     @Override
     public Post update(Post post) {
-        return null;
+        Objects.requireNonNull(post);
+        Objects.requireNonNull(post.getId());
+        List<Post> allRegions = getAllPosts();
+        if (getPostById(post.getId()) == null) {
+            return post;
+        }
+        List<Post> filteredPosts = allRegions
+                .stream()
+                .filter(r -> !post.getId().equals(r.getId()))
+                .collect(Collectors.toList());
+        filteredPosts.add(post);
+        writeToDatabase(filteredPosts);
+        return post;
     }
 
     private Post getPostById(Long id) {
