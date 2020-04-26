@@ -21,9 +21,11 @@ public class Post {
     }
 
     public Post(String content, LocalDateTime created, LocalDateTime updated) {
-        this.content = content;
-        this.created = created;
-        this.updated = updated;
+        this(null, content, created, updated);
+    }
+
+    public Post(long id, String content) {
+        this(id, content, null, null);
     }
 
     public Long getId() {
