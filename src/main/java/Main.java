@@ -90,7 +90,7 @@ public class Main {
         System.out.println(userRepository.save(new User("fn", "ln", Collections.emptyList(), new Region(2L, ""))));
         System.out.println("All users:");
         System.out.println(userRepository.getAll());
-        System.out.println("User () was added:");
+        System.out.println("User ('name_random', 'smth') was added:");
         System.out.println(userRepository.save(new User("name_random", "smth", Collections.emptyList(), new Region(3L, "sdgve"))));
         System.out.println("All users:");
         System.out.println(userRepository.getAll());
@@ -108,6 +108,6 @@ public class Main {
         System.out.println(userRepository.getAll());
 
         Files.write(Paths.get("src/main/resources/files/users.txt"),
-                "1,content1,1587897426,{1,3},1\n2,content2,1587893426,{1},2\n5,fn,ln,{3},1\n3,name_random,smth,{2},3\n".getBytes());
+                "1,user1,surname1,{1,3},1\n2,user2,sn2,{1},2\n3,third_user,lastname,{3},1\n4,name,name,{2},3\n".getBytes());
     }
 }
