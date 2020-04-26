@@ -17,27 +17,48 @@ public class JavaIOUserRepository implements CRUDRepository<User> {
 
     @Override
     public User getById(Long id) {
-        return null;
+        return getUserById(id);
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        return getAllUsers();
     }
 
     @Override
-    public User save(User region) {
-        return null;
+    public User save(User user) {
+        Objects.requireNonNull(user);
+        Long newId = createIdForNewRecord();
+        user.setId(newId);
+        writeToDatabase(Collections.singletonList(user), StandardOpenOption.APPEND);
+        return user;
     }
 
     @Override
     public void deleteBy(Long id) {
-
+        Objects.requireNonNull(id);
+        List<User> filteredUsers = getAllUsers()
+                .stream()
+                .filter(r -> !id.equals(r.getId()))
+                .collect(Collectors.toList());
+        writeToDatabase(filteredUsers);
     }
 
     @Override
     public User update(User region) {
-        return null;
+        Objects.requireNonNull(region);
+        Objects.requireNonNull(region.getId());
+        List<User> allRegions = getAllUsers();
+        if (getUserById(region.getId()) == null) {
+            return region;
+        }
+        List<User> filteredUsers = allRegions
+                .stream()
+                .filter(r -> !region.getId().equals(r.getId()))
+                .collect(Collectors.toList());
+        filteredUsers.add(region);
+        writeToDatabase(filteredUsers);
+        return region;
     }
 
     private User getUserById(Long id) {
