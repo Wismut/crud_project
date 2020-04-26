@@ -2,14 +2,18 @@ package repository;
 
 import model.Post;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class JavaIOPostRepository implements CRUDRepository<Post> {
@@ -22,12 +26,16 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
 
     @Override
     public List<Post> getAll() {
-        return null;
+        return getAllPosts();
     }
 
     @Override
-    public Post save(Post region) {
-        return null;
+    public Post save(Post post) {
+        Objects.requireNonNull(post);
+        Long newId = createIdForNewRecord();
+        post.setId(newId);
+        writeToDatabase(Collections.singletonList(post), StandardOpenOption.APPEND);
+        return post;
     }
 
     @Override
@@ -36,7 +44,7 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
     }
 
     @Override
-    public Post update(Post region) {
+    public Post update(Post post) {
         return null;
     }
 
@@ -70,5 +78,38 @@ public class JavaIOPostRepository implements CRUDRepository<Post> {
             e.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    private void writeToDatabase(List<Post> posts, StandardOpenOption... openOptions) {
+        try (BufferedWriter writer =
+                     Files.newBufferedWriter(Paths.get(POST_REPOSITORY_PATH), openOptions)) {
+            for (Post post : posts) {
+                writer.write(post.getId() +
+                        DELIMITER +
+                        post.getContent() +
+                        DELIMITER +
+                        post.getCreated() +
+                        DELIMITER +
+                        post.getUpdated());
+                writer.newLine();
+                writer.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Long createIdForNewRecord() {
+        Optional<Long> result = getAllIds()
+                .stream()
+                .max(Long::compare);
+        return result.isPresent() ? result.get() + 1 : 1L;
+    }
+
+    private List<Long> getAllIds() {
+        return getAllPosts()
+                .stream()
+                .map(Post::getId)
+                .collect(Collectors.toList());
     }
 }
