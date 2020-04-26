@@ -9,13 +9,16 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class JavaIORegionRepository {
     private final String REGION_REPOSITORY_PATH = "src/main/resources/files/regions.txt";
     private final String DELIMITER = ",";
 
     public Region getById(Long id) {
+        return getRegionById(id);
+    }
+
+    private Region getRegionById(Long id) {
         Objects.requireNonNull(id);
         try {
             return getAllRegions()
@@ -76,19 +79,15 @@ public class JavaIORegionRepository {
         Objects.requireNonNull(region);
         Objects.requireNonNull(region.getId());
         List<Region> allRegions = getAllRegions();
-        if (getAllRegions()
-                .stream()
-                .filter(r -> region.getId().equals(r.getId()))
-                .count() == 0) {
+        if (getRegionById(region.getId()) == null) {
             return region;
         }
-        Stream<Region> streamWithNewRegion = Stream.of(region);
-        Stream<Region> streamWithoutOldRegion = allRegions
+        List<Region> filteredRegions = allRegions
                 .stream()
-                .filter(r -> !region.getId().equals(r.getId()));
-        List<Region> regions = Stream.concat(streamWithNewRegion, streamWithoutOldRegion)
+                .filter(r -> !region.getId().equals(r.getId()))
                 .collect(Collectors.toList());
-        writeToDatabase(regions);
+        filteredRegions.add(region);
+        writeToDatabase(filteredRegions);
         return region;
     }
 
