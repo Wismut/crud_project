@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Main {
@@ -105,7 +106,7 @@ public class Main {
         System.out.println("User with id = 3 before update:");
         System.out.println(userRepository.getById(3L));
         System.out.println("Update with id = 3");
-        userRepository.update(new User(3L, "name", "surname", Collections.singletonList(new Post(1L, "")), new Region(2L, "sdvf")));
+        userRepository.update(new User(3L, "name", "surname", Arrays.asList(new Post(1L, ""), new Post(3L, "")), new Region(2L, "sdvf")));
         System.out.println("User with id = 3 after update:");
         System.out.println(userRepository.getById(3L));
         System.out.println("All users:");

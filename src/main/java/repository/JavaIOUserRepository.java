@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JavaIOUserRepository implements CrudRepository<User> {
     private final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
@@ -56,14 +57,15 @@ public class JavaIOUserRepository implements CrudRepository<User> {
     public User update(User user) {
         Objects.requireNonNull(user);
         Objects.requireNonNull(user.getId());
-        if (getUserById(user.getId()) == null) {
+        User oldUser = getUserById(user.getId());
+        if (oldUser == null) {
             return user;
         }
         List<User> filteredUsers = getAllUsers()
                 .stream()
                 .filter(u -> !user.getId().equals(u.getId()))
                 .collect(Collectors.toList());
-        filteredUsers.add(user);
+        filteredUsers.add(merge(oldUser, user));
         writeToDatabase(filteredUsers);
         return user;
     }
@@ -162,5 +164,32 @@ public class JavaIOUserRepository implements CrudRepository<User> {
                 lastName,
                 posts,
                 region);
+    }
+
+    public User merge(User oldUser, User newUser) {
+        if (newUser.getFirstName() == null) {
+            newUser.setFirstName(oldUser.getFirstName());
+        }
+        if (newUser.getLastName() == null) {
+            newUser.setLastName(oldUser.getLastName());
+        }
+        if (newUser.getPosts() == null || newUser.getPosts().isEmpty()) {
+            newUser.setPosts(oldUser.getPosts());
+        } else {
+            List<Post> mergedPostsIds = new ArrayList<>(oldUser.getPosts());
+            mergedPostsIds.retainAll(newUser.getPosts());
+            newUser.setPosts(Stream.concat(newUser
+                            .getPosts()
+                            .stream(),
+                    oldUser
+                            .getPosts()
+                            .stream())
+                    .filter(p -> !mergedPostsIds.contains(p))
+                    .collect(Collectors.toList()));
+        }
+        if (newUser.getRegion() == null) {
+            newUser.setRegion(oldUser.getRegion());
+        }
+        return newUser;
     }
 }
