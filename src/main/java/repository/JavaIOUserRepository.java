@@ -1,5 +1,7 @@
 package repository;
 
+import model.Post;
+import model.Region;
 import model.User;
 
 import java.io.BufferedWriter;
@@ -12,8 +14,13 @@ import java.util.stream.Collectors;
 
 public class JavaIOUserRepository implements CrudRepository<User> {
     private final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
-    private final JavaIOPostRepository postRepository = new JavaIOPostRepository();
-    private final JavaIORegionRepository regionRepository = new JavaIORegionRepository();
+    private final CrudRepository<Post> postRepository;
+    private final CrudRepository<Region> regionRepository;
+
+    public JavaIOUserRepository(CrudRepository<Post> postRepository, CrudRepository<Region> regionRepository) {
+        this.postRepository = postRepository;
+        this.regionRepository = regionRepository;
+    }
 
     @Override
     public User getById(Long id) {
@@ -78,14 +85,7 @@ public class JavaIOUserRepository implements CrudRepository<User> {
         try {
             return Files.readAllLines(Paths.get(USER_REPOSITORY_PATH))
                     .stream()
-                    .map(s -> {
-                        String[] split = s.split(DELIMITER);
-                        return new User(Long.parseLong(split[0]),
-                                split[1],
-                                split[2],
-                                postRepository.getAll(),
-                                regionRepository.getById(1L));
-                    })
+                    .map(this::createUserFromDBString)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,5 +129,29 @@ public class JavaIOUserRepository implements CrudRepository<User> {
                 .stream()
                 .map(User::getId)
                 .collect(Collectors.toList());
+    }
+
+    private List<Post> getPostsByIds(List<Long> postIds) {
+        return postRepository.getAll()
+                .stream()
+                .filter(p -> postIds.contains(p.getId()))
+                .collect(Collectors.toList());
+    }
+
+    private User createUserFromDBString(String string) {
+        String[] split = string.split("[" + PREFIX + SUFFIX + "]+");
+        String[] idFirstNameLastName = split[0].split(DELIMITER);
+        Long id = Long.parseLong(idFirstNameLastName[0]);
+        String firstName = idFirstNameLastName[1];
+        String lastName = idFirstNameLastName[2];
+        List<Post> posts = getPostsByIds(Arrays.stream(split[1].split(DELIMITER))
+                .map(Long::parseLong)
+                .collect(Collectors.toList()));
+        Region region = regionRepository.getById(Long.parseLong(split[2].split(DELIMITER)[1]));
+        return new User(id,
+                firstName,
+                lastName,
+                posts,
+                region);
     }
 }

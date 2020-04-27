@@ -14,13 +14,15 @@ import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        testRegions();
-        testPosts();
-        testUsers();
+        CrudRepository<Region> regionRepository = new JavaIORegionRepository();
+        CrudRepository<Post> postRepository = new JavaIOPostRepository();
+        CrudRepository<User> userRepository = new JavaIOUserRepository(postRepository, regionRepository);
+        testRegions(regionRepository);
+        testPosts(postRepository);
+        testUsers(userRepository);
     }
 
-    private static void testRegions() throws IOException {
-        JavaIORegionRepository regionRepository = new JavaIORegionRepository();
+    private static void testRegions(CrudRepository<Region> regionRepository) throws IOException {
         System.out.println("Region with id = 1:");
         System.out.println(regionRepository.getById(1L));
         System.out.println("All regions:");
@@ -49,8 +51,7 @@ public class Main {
         Files.write(Paths.get("src/main/resources/files/regions.txt"), "1,UA\n2,YTR\n3,UK\n".getBytes());
     }
 
-    private static void testPosts() throws IOException {
-        CrudRepository<Post> postRepository = new JavaIOPostRepository();
+    private static void testPosts(CrudRepository<Post> postRepository) throws IOException {
         System.out.println("Post with id = 1:");
         System.out.println(postRepository.getById(1L));
         System.out.println("All posts:");
@@ -80,8 +81,7 @@ public class Main {
                 "1,content1,1587897426,1587897428\n2,content2,1587893426,1587893428\n3,content3,1587887426,1587887429\n".getBytes());
     }
 
-    private static void testUsers() throws IOException {
-        CrudRepository<User> userRepository = new JavaIOUserRepository();
+    private static void testUsers(CrudRepository<User> userRepository) throws IOException {
         System.out.println("User with id = 1:");
         System.out.println(userRepository.getById(1L));
         System.out.println("All users:");
