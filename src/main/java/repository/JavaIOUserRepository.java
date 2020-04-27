@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 public class JavaIOUserRepository implements CrudRepository<User> {
     private final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
+    private final String POST_IDS_DELIMITER = "_";
     private final CrudRepository<Post> postRepository;
     private final CrudRepository<Region> regionRepository;
 
@@ -106,7 +107,7 @@ public class JavaIOUserRepository implements CrudRepository<User> {
                         .add(user.getPosts()
                                 .stream()
                                 .map(p -> p.getId().toString())
-                                .collect(Collectors.joining(DELIMITER, PREFIX, SUFFIX)))
+                                .collect(Collectors.joining(POST_IDS_DELIMITER, PREFIX, SUFFIX)))
                         .add(user.getRegion().getId().toString());
                 writer.write(stringJoiner.toString());
                 writer.newLine();
@@ -139,15 +140,20 @@ public class JavaIOUserRepository implements CrudRepository<User> {
     }
 
     private User createUserFromDBString(String string) {
-        String[] split = string.split("[" + PREFIX + SUFFIX + "]+");
-        String[] idFirstNameLastName = split[0].split(DELIMITER);
-        Long id = Long.parseLong(idFirstNameLastName[0]);
-        String firstName = idFirstNameLastName[1];
-        String lastName = idFirstNameLastName[2];
-        List<Post> posts = getPostsByIds(Arrays.stream(split[1].split(DELIMITER))
-                .map(Long::parseLong)
-                .collect(Collectors.toList()));
-        Region region = regionRepository.getById(Long.parseLong(split[2].split(DELIMITER)[1]));
+        String[] split = string.split(DELIMITER);
+        Long id = Long.parseLong(split[0]);
+        String firstName = split[1];
+        String lastName = split[2];
+        List<Post> posts;
+        if (split[3].matches(".*\\d.*")) {
+            String[] postIds = split[3].replaceAll("[" + SUFFIX + PREFIX + "]+", "").split(POST_IDS_DELIMITER);
+            posts = getPostsByIds(Arrays.stream(postIds)
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList()));
+        } else {
+            posts = Collections.emptyList();
+        }
+        Region region = regionRepository.getById(Long.parseLong(split[4]));
         return new User(id,
                 firstName,
                 lastName,

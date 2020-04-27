@@ -49,6 +49,8 @@ public class Main {
         System.out.println(regionRepository.getAll());
 
         Files.write(Paths.get("src/main/resources/files/regions.txt"), "1,UA\n2,YTR\n3,UK\n".getBytes());
+
+        System.out.println();
     }
 
     private static void testPosts(CrudRepository<Post> postRepository) throws IOException {
@@ -79,6 +81,8 @@ public class Main {
 
         Files.write(Paths.get("src/main/resources/files/posts.txt"),
                 "1,content1,1587897426,1587897428\n2,content2,1587893426,1587893428\n3,content3,1587887426,1587887429\n".getBytes());
+
+        System.out.println();
     }
 
     private static void testUsers(CrudRepository<User> userRepository) throws IOException {
@@ -101,13 +105,15 @@ public class Main {
         System.out.println("User with id = 3 before update:");
         System.out.println(userRepository.getById(3L));
         System.out.println("Update with id = 3");
-        userRepository.update(new User(3L, "name", "surname", Collections.singletonList(new Post(1L, "")), new Region()));
+        userRepository.update(new User(3L, "name", "surname", Collections.singletonList(new Post(1L, "")), new Region(2L, "sdvf")));
         System.out.println("User with id = 3 after update:");
         System.out.println(userRepository.getById(3L));
         System.out.println("All users:");
         System.out.println(userRepository.getAll());
 
         Files.write(Paths.get("src/main/resources/files/users.txt"),
-                "1,user1,surname1,{1,3},1\n2,user2,sn2,{1},2\n3,third_user,lastname,{3},1\n4,name,name,{2},3\n".getBytes());
+                "1,user1,surname1,{1_3},1\n2,user2,sn2,{1},2\n3,third_user,lastname,{3},1\n4,name,name,{2},3\n".getBytes());
+
+        System.out.println();
     }
 }
