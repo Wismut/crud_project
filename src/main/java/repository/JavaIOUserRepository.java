@@ -146,7 +146,10 @@ public class JavaIOUserRepository implements CrudRepository<User> {
         String lastName = split[2];
         List<Post> posts;
         if (split[3].matches(".*\\d.*")) {
-            String[] postIds = split[3].replaceAll("[" + SUFFIX + PREFIX + "]+", "").split(POST_IDS_DELIMITER);
+            String[] postIds = split[3]
+                    .replaceFirst("\\" + PREFIX, "")
+                    .replaceFirst(SUFFIX, "")
+                    .split(POST_IDS_DELIMITER);
             posts = getPostsByIds(Arrays.stream(postIds)
                     .map(Long::parseLong)
                     .collect(Collectors.toList()));

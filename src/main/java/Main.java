@@ -91,7 +91,7 @@ public class Main {
         System.out.println("All users:");
         System.out.println(userRepository.getAll());
         System.out.println("User ('fn', 'ln') was added:");
-        System.out.println(userRepository.save(new User("fn", "ln", Collections.emptyList(), new Region(2L, ""))));
+        System.out.println(userRepository.save(new User("fn", "ln", Collections.singletonList(new Post(2L, "")), new Region(2L, ""))));
         System.out.println("All users:");
         System.out.println(userRepository.getAll());
         System.out.println("User ('name_random', 'smth') was added:");
