@@ -2,6 +2,7 @@ package repository.io;
 
 
 import model.Region;
+import repository.RegionRepository;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
