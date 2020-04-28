@@ -2,7 +2,6 @@ package repository.io;
 
 
 import model.Region;
-import repository.CrudRepository;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class JavaIORegionRepository implements CrudRepository<Region> {
+public class JavaIORegionRepository implements RegionRepository {
     private final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.txt";
 
     @Override

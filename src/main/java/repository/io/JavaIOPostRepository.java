@@ -51,14 +51,15 @@ public class JavaIOPostRepository implements PostRepository {
     public Post update(Post post) {
         Objects.requireNonNull(post);
         Objects.requireNonNull(post.getId());
-        if (getPostById(post.getId()) == null) {
+        Post oldPost = getPostById(post.getId());
+        if (oldPost == null) {
             return post;
         }
         List<Post> filteredPosts = getAllPosts()
                 .stream()
                 .filter(p -> !post.getId().equals(p.getId()))
                 .collect(Collectors.toList());
-        filteredPosts.add(post);
+        filteredPosts.add(merge(oldPost, post));
         writeToDatabase(filteredPosts);
         return post;
     }
@@ -140,5 +141,18 @@ public class JavaIOPostRepository implements PostRepository {
 
     private long convertLocalDateTimeToSeconds(LocalDateTime dateTime) {
         return dateTime.toEpochSecond(ZoneOffset.UTC);
+    }
+
+    private Post merge(Post oldPost, Post newPost) {
+        if (newPost.getContent() == null) {
+            newPost.setContent(oldPost.getContent());
+        }
+        if (newPost.getCreated() == null) {
+            newPost.setCreated(oldPost.getCreated());
+        }
+        if (newPost.getUpdated() == null) {
+            newPost.setUpdated(oldPost.getUpdated());
+        }
+        return newPost;
     }
 }

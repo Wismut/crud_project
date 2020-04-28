@@ -4,6 +4,7 @@ import model.Post;
 import model.Region;
 import model.User;
 import repository.CrudRepository;
+import repository.UserRepository;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,13 +15,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class JavaIOUserRepository implements CrudRepository<User> {
+public class JavaIOUserRepository implements UserRepository {
     private final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
     private final String POST_IDS_DELIMITER = "_";
-    private final CrudRepository<Post> postRepository;
-    private final CrudRepository<Region> regionRepository;
+    private final CrudRepository<Post, Long> postRepository;
+    private final CrudRepository<Region, Long> regionRepository;
 
-    public JavaIOUserRepository(CrudRepository<Post> postRepository, CrudRepository<Region> regionRepository) {
+    public JavaIOUserRepository(CrudRepository<Post, Long> postRepository, CrudRepository<Region, Long> regionRepository) {
         this.postRepository = postRepository;
         this.regionRepository = regionRepository;
     }
