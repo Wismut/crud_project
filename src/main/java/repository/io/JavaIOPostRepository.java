@@ -1,6 +1,7 @@
-package repository;
+package repository.io;
 
 import model.Post;
+import repository.PostRepository;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class JavaIOPostRepository implements CrudRepository<Post> {
+public class JavaIOPostRepository implements PostRepository {
     private static final String POST_REPOSITORY_PATH = REPOSITORY_PATH + "/posts.txt";
 
     @Override

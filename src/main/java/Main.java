@@ -2,9 +2,9 @@ import model.Post;
 import model.Region;
 import model.User;
 import repository.CrudRepository;
-import repository.JavaIOPostRepository;
-import repository.JavaIORegionRepository;
-import repository.JavaIOUserRepository;
+import repository.io.JavaIOPostRepository;
+import repository.io.JavaIORegionRepository;
+import repository.io.JavaIOUserRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,15 +15,15 @@ import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        CrudRepository<Region> regionRepository = new JavaIORegionRepository();
-        CrudRepository<Post> postRepository = new JavaIOPostRepository();
-        CrudRepository<User> userRepository = new JavaIOUserRepository(postRepository, regionRepository);
+        CrudRepository<Region, Long> regionRepository = new JavaIORegionRepository();
+        CrudRepository<Post, Long> postRepository = new JavaIOPostRepository();
+        CrudRepository<User, Long> userRepository = new JavaIOUserRepository(postRepository, regionRepository);
         testRegions(regionRepository);
         testPosts(postRepository);
         testUsers(userRepository);
     }
 
-    private static void testRegions(CrudRepository<Region> regionRepository) throws IOException {
+    private static void testRegions(CrudRepository<Region, Long> regionRepository) throws IOException {
         System.out.println("Region with id = 1:");
         System.out.println(regionRepository.getById(1L));
         System.out.println("All regions:");
@@ -54,7 +54,7 @@ public class Main {
         System.out.println();
     }
 
-    private static void testPosts(CrudRepository<Post> postRepository) throws IOException {
+    private static void testPosts(CrudRepository<Post, Long> postRepository) throws IOException {
         System.out.println("Post with id = 1:");
         System.out.println(postRepository.getById(1L));
         System.out.println("All posts:");
@@ -86,7 +86,7 @@ public class Main {
         System.out.println();
     }
 
-    private static void testUsers(CrudRepository<User> userRepository) throws IOException {
+    private static void testUsers(CrudRepository<User, Long> userRepository) throws IOException {
         System.out.println("User with id = 1:");
         System.out.println(userRepository.getById(1L));
         System.out.println("All users:");

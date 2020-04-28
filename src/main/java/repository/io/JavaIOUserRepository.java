@@ -1,8 +1,9 @@
-package repository;
+package repository.io;
 
 import model.Post;
 import model.Region;
 import model.User;
+import repository.CrudRepository;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
