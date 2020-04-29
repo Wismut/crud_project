@@ -2,11 +2,20 @@ package controller;
 
 import model.Region;
 import repository.RegionRepository;
+import repository.io.JavaIORegionRepository;
 
 import java.util.List;
 
 public class RegionController {
     private final RegionRepository regionRepository;
+    private static RegionController instance;
+
+    public static RegionController getInstance()  {
+        if (instance == null) {
+            instance = new RegionController(JavaIORegionRepository.getInstance());
+        }
+        return instance;
+    }
 
     public RegionController(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
