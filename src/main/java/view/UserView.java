@@ -94,9 +94,9 @@ public class UserView implements View<User, Long> {
                 return;
             case GET_ALL:
                 getAll();
+                return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);
         }
-
     }
 }
