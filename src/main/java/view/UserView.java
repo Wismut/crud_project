@@ -3,10 +3,15 @@ package view;
 
 import command.Command;
 import controller.UserController;
+import model.Post;
+import model.Region;
 import model.User;
+import repository.CrudRepository;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserView implements View {
     private final UserController userController;
@@ -41,9 +46,16 @@ public class UserView implements View {
             String lastName = MainView.getReader().readLine();
             System.out.println("Type posts ids within comma");
             String postsIds = MainView.getReader().readLine();
+            List<Post> posts = Arrays.stream(postsIds.split(CrudRepository.DELIMITER))
+                    .map(s -> new Post(Long.parseLong(s)))
+                    .collect(Collectors.toList());
             System.out.println("Type region id");
-            String regionId = MainView.getReader().readLine();
-            return userController.save(new User());
+            Long regionId = Long.parseLong(MainView.getReader().readLine());
+            Region region = new Region(regionId, null);
+            return userController.save(new User(firstName,
+                    lastName,
+                    posts,
+                    region));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,9 +66,23 @@ public class UserView implements View {
         try {
             System.out.println("Type id");
             Long id = Long.parseLong(MainView.getReader().readLine());
-            System.out.println("Type new name");
-            String name = MainView.getReader().readLine();
-            return userController.update(new User());
+            System.out.println("Type firstName");
+            String firstName = MainView.getReader().readLine();
+            System.out.println("Type lastName");
+            String lastName = MainView.getReader().readLine();
+            System.out.println("Type posts ids within comma");
+            String postsIds = MainView.getReader().readLine();
+            List<Post> posts = Arrays.stream(postsIds.split(CrudRepository.DELIMITER))
+                    .map(s -> new Post(Long.parseLong(s)))
+                    .collect(Collectors.toList());
+            System.out.println("Type region id");
+            Long regionId = Long.parseLong(MainView.getReader().readLine());
+            Region region = new Region(regionId, null);
+            return userController.update(new User(id,
+                    firstName,
+                    lastName,
+                    posts,
+                    region));
         } catch (IOException e) {
             e.printStackTrace();
         }

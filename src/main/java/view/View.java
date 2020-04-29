@@ -28,7 +28,6 @@ public interface View {
                 if ("q".equals(type)) {
                     System.exit(0);
                 }
-//                command = CommandFactory.create(type);
                 command = Command.getCommandByLetter(type);
             } while (command == null);
             return command;

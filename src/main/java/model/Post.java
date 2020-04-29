@@ -25,8 +25,12 @@ public class Post {
         this(null, content, created, updated);
     }
 
-    public Post(long id, String content) {
+    public Post(Long id, String content) {
         this(id, content, null, null);
+    }
+
+    public Post(Long id) {
+        this(id, null, null, null);
     }
 
     public Long getId() {
