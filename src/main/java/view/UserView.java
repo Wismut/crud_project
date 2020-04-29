@@ -8,7 +8,7 @@ import model.User;
 import java.io.IOException;
 import java.util.List;
 
-public class UserView extends View<User,Long> {
+public class UserView implements View<User, Long> {
     private final UserController userController;
     private static UserView instance;
 
@@ -23,32 +23,26 @@ public class UserView extends View<User,Long> {
         this.userController = userController;
     }
 
-    @Override
     void deleteById(Long aLong) {
 
     }
 
-    @Override
     User save(User entity) {
         return null;
     }
 
-    @Override
     User update(User entity) {
         return null;
     }
 
-    @Override
-    User getById(Long aLong) {
+    User getById(Long id) {
         return null;
     }
 
-    @Override
     List<User> getAll() {
         return null;
     }
 
-    @Override
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class PostView extends View<Post, Long> {
+public class PostView implements View<Post,Long> {
     private final PostController postController;
     private static PostView instance;
     public static final String LOCALDATETIME_PATTERN = "yyyy-MM-dd HH:mm";
@@ -26,32 +26,26 @@ public class PostView extends View<Post, Long> {
         this.postController = postController;
     }
 
-    @Override
     void deleteById(Long aLong) {
 
     }
 
-    @Override
     Post save(Post entity) {
         return null;
     }
 
-    @Override
     Post update(Post entity) {
         return null;
     }
 
-    @Override
     Post getById(Long aLong) {
         return null;
     }
 
-    @Override
     List<Post> getAll() {
         return null;
     }
 
-    @Override
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:

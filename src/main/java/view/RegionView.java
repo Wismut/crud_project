@@ -8,7 +8,7 @@ import model.Region;
 import java.io.IOException;
 import java.util.List;
 
-public class RegionView extends View<Region, Long> {
+public class RegionView implements View<Region, Long> {
     private final RegionController regionController;
     private static RegionView instance;
 
@@ -23,32 +23,26 @@ public class RegionView extends View<Region, Long> {
         this.regionController = regionController;
     }
 
-    @Override
     void deleteById(Long id) {
         regionController.deleteById(id);
     }
 
-    @Override
     Region save(Region region) {
         return regionController.save(region);
     }
 
-    @Override
     Region update(Region region) {
         return regionController.update(region);
     }
 
-    @Override
     Region getById(Long id) {
         return regionController.getById(id);
     }
 
-    @Override
     List<Region> getAll() {
         return regionController.getAll();
     }
 
-    @Override
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:
