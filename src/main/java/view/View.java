@@ -6,23 +6,24 @@ import command.CommandFactory;
 
 import java.io.IOException;
 
-public interface View<T, ID> {
-    static final String USER_NUMBER = "1";
-    static final String POST_NUMBER = "2";
-    static final String REGION_NUMBER = "3";
-    static final String USER_LETTER = "u";
-    static final String POST_LETTER = "p";
-    static final String REGION_LETTER = "r";
+public interface View {
+    String USER_NUMBER = "1";
+    String POST_NUMBER = "2";
+    String REGION_NUMBER = "3";
+    String USER_LETTER = "u";
+    String POST_LETTER = "p";
+    String REGION_LETTER = "r";
 
-    public default Command getCommand() {
+    default Command getCommand() {
         Command command;
         try {
             String type;
             do {
-                System.out.println("Type " + MainView.DELETE_COMMAND_LETTER + " if you want to delete info from the database");
-                System.out.println("Type " + MainView.UPDATE_COMMAND_LETTER + " if you want to update an info in the database");
-                System.out.println("Type " + MainView.SAVE_COMMAND_LETTER + " if you want to save info to the database");
-                System.out.println("Type " + MainView.GET_COMMAND_LETTER + " if you want to get info from the database");
+                System.out.println("Type " + MainView.DELETE_COMMAND_LETTER + " if you want to delete record from the database");
+                System.out.println("Type " + MainView.UPDATE_COMMAND_LETTER + " if you want to update record in the database");
+                System.out.println("Type " + MainView.SAVE_COMMAND_LETTER + " if you want to save record to the database");
+                System.out.println("Type " + MainView.GET_COMMAND_LETTER + " if you want to get one record from the database");
+                System.out.println("Type " + MainView.GET_ALL_COMMAND_LETTER + " if you want to get all records from the database");
                 System.out.println("Type q for quit");
                 type = MainView.getReader().readLine();
                 if ("q".equals(type)) {
@@ -37,5 +38,5 @@ public interface View<T, ID> {
         return null;
     }
 
-    public abstract void execute(Command command);
+    void execute(Command command);
 }

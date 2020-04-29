@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class PostView implements View<Post,Long> {
+public class PostView implements View {
     private final PostController postController;
     private static PostView instance;
     public static final String LOCALDATETIME_PATTERN = "yyyy-MM-dd HH:mm";
@@ -26,85 +26,86 @@ public class PostView implements View<Post,Long> {
         this.postController = postController;
     }
 
-    private void deleteById(Long aLong) {
-
+    private void delete() {
+        try {
+            System.out.println("Type post id");
+            String id = MainView.getReader().readLine();
+            postController.deleteById(Long.parseLong(id));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private Post save(Post entity) {
+    private Post save() {
+        try {
+            System.out.println("Type content");
+            String content = MainView.getReader().readLine();
+            System.out.println("Type created date and time in the format " + LOCALDATETIME_PATTERN);
+            String created = MainView.getReader().readLine();
+            System.out.println("Type updated date and time in the format " + LOCALDATETIME_PATTERN);
+            String updated = MainView.getReader().readLine();
+            Post post = new Post(content,
+                    LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
+                    LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
+            return postController.save(post);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    private Post update(Post entity) {
+    private Post update() {
+        try {
+            System.out.println("Type id");
+            Long id = Long.parseLong(MainView.getReader().readLine());
+            System.out.println("Type new content");
+            String content = MainView.getReader().readLine();
+            System.out.println("Type new created date and time in the format " + LOCALDATETIME_PATTERN);
+            String created = MainView.getReader().readLine();
+            System.out.println("Type new updated date and time in the format " + LOCALDATETIME_PATTERN);
+            String updated = MainView.getReader().readLine();
+            Post post = new Post(id,
+                    content,
+                    LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
+                    LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
+            return postController.update(post);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    private Post getById(Long aLong) {
+    private Post getOne() {
+        try {
+            System.out.println("Type post id");
+            String id = MainView.getReader().readLine();
+            return postController.getById(Long.parseLong(id));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     List<Post> getAll() {
-        return null;
+        return postController.getAll();
     }
 
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:
-                try {
-                    System.out.println("Type post id");
-                    String id = MainView.getReader().readLine();
-                    postController.deleteById(Long.parseLong(id));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                delete();
                 return;
             case SAVE:
-                try {
-                    System.out.println("Type content");
-                    String content = MainView.getReader().readLine();
-                    System.out.println("Type created date and time in the format " + LOCALDATETIME_PATTERN);
-                    String created = MainView.getReader().readLine();
-                    System.out.println("Type updated date and time in the format " + LOCALDATETIME_PATTERN);
-                    String updated = MainView.getReader().readLine();
-                    Post post = new Post(content,
-                            LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
-                            LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
-                    postController.save(post);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                System.out.println(save());
                 return;
             case UPDATE:
-                try {
-                    System.out.println("Type id");
-                    Long id = Long.parseLong(MainView.getReader().readLine());
-                    System.out.println("Type new content");
-                    String content = MainView.getReader().readLine();
-                    System.out.println("Type new created date and time in the format " + LOCALDATETIME_PATTERN);
-                    String created = MainView.getReader().readLine();
-                    System.out.println("Type new updated date and time in the format " + LOCALDATETIME_PATTERN);
-                    String updated = MainView.getReader().readLine();
-                    Post post = new Post(id,
-                            content,
-                            LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
-                            LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
-                    postController.update(post);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                System.out.println(update());
                 return;
             case GET_BY_ID:
-                try {
-                    System.out.println("Type post id");
-                    String id = MainView.getReader().readLine();
-                    Post post = postController.getById(Long.parseLong(id));
-                    System.out.println(post);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                getOne();
                 return;
             case GET_ALL:
-                List<Post> posts = postController.getAll();
-                System.out.println(posts);
+                System.out.println(getAll());
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);

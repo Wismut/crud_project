@@ -8,7 +8,7 @@ import model.Region;
 import java.io.IOException;
 import java.util.List;
 
-public class RegionView implements View<Region, Long> {
+public class RegionView implements View {
     private final RegionController regionController;
     private static RegionView instance;
 

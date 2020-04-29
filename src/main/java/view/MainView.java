@@ -10,6 +10,7 @@ public class MainView {
     public static final String GET_COMMAND_LETTER = "g";
     public static final String DELETE_COMMAND_LETTER = "d";
     public static final String UPDATE_COMMAND_LETTER = "u";
+    public static final String GET_ALL_COMMAND_LETTER = "a";
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public View readViewType() {

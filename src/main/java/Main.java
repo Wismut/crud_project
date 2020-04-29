@@ -17,9 +17,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         MainView mainView = new MainView();
         View view = mainView.readViewType();
-        System.out.println(view.getClass().getSimpleName());
         Command command = view.getCommand();
-        System.out.println(command);
+        view.execute(command);
 
 //        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 //        System.out.println(bufferedReader.readLine().length());

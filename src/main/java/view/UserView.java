@@ -8,7 +8,7 @@ import model.User;
 import java.io.IOException;
 import java.util.List;
 
-public class UserView implements View<User, Long> {
+public class UserView implements View {
     private final UserController userController;
     private static UserView instance;
 
@@ -84,16 +84,16 @@ public class UserView implements View<User, Long> {
                 delete();
                 return;
             case SAVE:
-                save();
+                System.out.println(save());
                 return;
             case UPDATE:
-                update();
+                System.out.println(update());
                 return;
             case GET_BY_ID:
-                get();
+                System.out.println(get());
                 return;
             case GET_ALL:
-                getAll();
+                System.out.println(getAll());
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);
