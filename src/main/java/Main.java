@@ -2,9 +2,8 @@ import model.Post;
 import model.Region;
 import model.User;
 import repository.CrudRepository;
-import repository.io.JavaIOPostRepository;
-import repository.io.JavaIORegionRepository;
-import repository.io.JavaIOUserRepository;
+import view.MainView;
+import view.View;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,12 +14,17 @@ import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        CrudRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();
-        CrudRepository<Post, Long> postRepository = JavaIOPostRepository.getInstance();
-        CrudRepository<User, Long> userRepository = JavaIOUserRepository.getInstance();
-        testRegions(regionRepository);
-        testPosts(postRepository);
-        testUsers(userRepository);
+        MainView mainView = new MainView();
+        View view = mainView.readViewType();
+        System.out.println(view.getClass().getSimpleName());
+
+
+//        CrudRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();
+//        CrudRepository<Post, Long> postRepository = JavaIOPostRepository.getInstance();
+//        CrudRepository<User, Long> userRepository = JavaIOUserRepository.getInstance();
+//        testRegions(regionRepository);
+//        testPosts(postRepository);
+//        testUsers(userRepository);
     }
 
     private static void testRegions(CrudRepository<Region, Long> regionRepository) throws IOException {

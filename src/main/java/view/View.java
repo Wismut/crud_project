@@ -1,6 +1,8 @@
 package view;
 
 
+import command.Command;
+
 import java.util.List;
 
 public abstract class View<T, ID> {
@@ -10,7 +12,7 @@ public abstract class View<T, ID> {
     static final String USER_LETTER = "u";
     static final String POST_LETTER = "p";
     static final String REGION_LETTER = "r";
-    ID id;
+    T entity;
 
     abstract void deleteById(ID id);
 
@@ -21,4 +23,6 @@ public abstract class View<T, ID> {
     abstract T getById(ID id);
 
     abstract List<T> getAll();
+
+    public abstract Command getCommand();
 }
