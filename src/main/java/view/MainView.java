@@ -1,6 +1,8 @@
 package view;
 
 
+import command.Command;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +14,12 @@ public class MainView {
     public static final String UPDATE_COMMAND_LETTER = "u";
     public static final String GET_ALL_COMMAND_LETTER = "a";
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    public void run() {
+        View view = this.readViewType();
+        Command command = view.getCommand();
+        view.execute(command);
+    }
 
     public View readViewType() {
         View view;
