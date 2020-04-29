@@ -17,6 +17,14 @@ import java.util.stream.Collectors;
 
 public class JavaIOPostRepository implements PostRepository {
     private static final String POST_REPOSITORY_PATH = REPOSITORY_PATH + "/posts.txt";
+    private static PostRepository instance;
+
+    public static PostRepository getInstance() {
+        if (instance == null) {
+            instance = new JavaIOPostRepository();
+        }
+        return instance;
+    }
 
     @Override
     public Post getById(Long id) {

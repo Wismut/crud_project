@@ -20,10 +20,19 @@ public class JavaIOUserRepository implements UserRepository {
     private final String POST_IDS_DELIMITER = "_";
     private final CrudRepository<Post, Long> postRepository;
     private final CrudRepository<Region, Long> regionRepository;
+    private static UserRepository instance;
 
     public JavaIOUserRepository(CrudRepository<Post, Long> postRepository, CrudRepository<Region, Long> regionRepository) {
         this.postRepository = postRepository;
         this.regionRepository = regionRepository;
+    }
+
+    public static UserRepository getInstance() {
+        if (instance == null) {
+            instance = new JavaIOUserRepository(JavaIOPostRepository.getInstance(),
+                    JavaIORegionRepository.getInstance());
+        }
+        return instance;
     }
 
     @Override

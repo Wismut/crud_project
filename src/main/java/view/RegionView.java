@@ -3,7 +3,7 @@ package view;
 
 import controller.RegionController;
 
-public class RegionView {
+public class RegionView implements View {
     private final RegionController regionController;
 
     public RegionView(RegionController regionController) {
