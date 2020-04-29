@@ -4,16 +4,16 @@ package command;
 import view.MainView;
 
 public class CommandFactory {
-    public static Command create(String type) {
+    public static Command2 create(String type) {
         switch (type) {
             case MainView.DELETE_COMMAND_LETTER:
-                return new DeleteCommand();
+                return Command2.DELETE_BY_ID;
             case MainView.GET_COMMAND_LETTER:
-                return new GetCommand();
+                return Command2.GET_BY_ID;
             case MainView.SAVE_COMMAND_LETTER:
-                return new SaveCommand();
+                return Command2.SAVE;
             case MainView.UPDATE_COMMAND_LETTER:
-                return new UpdateCommand();
+                return Command2.UPDATE;
             default:
                 return null;
         }

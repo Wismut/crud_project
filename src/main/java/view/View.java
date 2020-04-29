@@ -1,7 +1,6 @@
 package view;
 
 
-import command.Command;
 import command.Command2;
 import command.CommandFactory;
 
@@ -27,8 +26,8 @@ public abstract class View<T, ID> {
 
     abstract List<T> getAll();
 
-    public Command getCommand() {
-        Command command;
+    public Command2 getCommand() {
+        Command2 command;
         try {
             String type;
             do {

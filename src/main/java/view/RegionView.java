@@ -1,7 +1,7 @@
 package view;
 
 
-import command.Command;
+import command.Command2;
 import controller.RegionController;
 import model.Region;
 
@@ -48,7 +48,7 @@ public class RegionView extends View<Region, Long> {
     }
 
     @Override
-    public Command getCommand() {
-        return super.getCommand();
+    public void execute(Command2 command) {
+
     }
 }

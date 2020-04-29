@@ -1,7 +1,6 @@
 package view;
 
 
-import command.Command;
 import command.Command2;
 import controller.PostController;
 import model.Post;
@@ -53,22 +52,16 @@ public class PostView extends View<Post, Long> {
     }
 
     @Override
-    public Command getCommand() {
-        return super.getCommand();
-    }
-
-    @Override
     public void execute(Command2 command) {
         switch (command) {
             case DELETE_BY_ID:
-                String id = null;
                 try {
                     System.out.println("Type post id");
-                    id = MainView.getReader().readLine();
+                    String id = MainView.getReader().readLine();
+                    postController.deleteById(Long.parseLong(id));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                postController.deleteById(Long.parseLong(id));
                 return;
             case SAVE:
                 try {
@@ -85,6 +78,25 @@ public class PostView extends View<Post, Long> {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                return;
+            case UPDATE:
+                try {
+                    System.out.println("Type id");
+                    Long id = Long.parseLong(MainView.getReader().readLine());
+                    System.out.println("Type content");
+                    String content = MainView.getReader().readLine();
+                    System.out.println("Type created date and time in the format " + LOCALDATETIME_PATTERN);
+                    String created = MainView.getReader().readLine();
+                    System.out.println("Type updated date and time in the format " + LOCALDATETIME_PATTERN);
+                    String updated = MainView.getReader().readLine();
+                    Post post = new Post(content,
+                            LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
+                            LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
+                    postController.update(post);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
         }
     }
 }
