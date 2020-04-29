@@ -12,9 +12,9 @@ public interface CrudRepository<T, ID> {
 
     List<T> getAll();
 
-    T save(T region);
+    T save(T entity);
 
     void deleteBy(ID id);
 
-    T update(T region);
+    T update(T entity);
 }
