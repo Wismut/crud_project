@@ -1,7 +1,7 @@
 package view;
 
 
-import command.Command2;
+import command.Command;
 import controller.UserController;
 import model.User;
 
@@ -48,7 +48,7 @@ public class UserView extends View<User,Long> {
     }
 
     @Override
-    public void execute(Command2 command) {
+    public void execute(Command command) {
 
     }
 }

@@ -1,5 +1,6 @@
 package command;
 
-public interface Command<T> {
-    void execute();
+
+public enum Command {
+    UPDATE, DELETE_BY_ID, SAVE, GET_BY_ID, GET_ALL
 }

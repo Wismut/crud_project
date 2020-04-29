@@ -1,7 +1,7 @@
 package view;
 
 
-import command.Command2;
+import command.Command;
 import command.CommandFactory;
 
 import java.io.IOException;
@@ -26,8 +26,8 @@ public abstract class View<T, ID> {
 
     abstract List<T> getAll();
 
-    public Command2 getCommand() {
-        Command2 command;
+    public Command getCommand() {
+        Command command;
         try {
             String type;
             do {
@@ -49,5 +49,5 @@ public abstract class View<T, ID> {
         return null;
     }
 
-    public abstract void execute(Command2 command);
+    public abstract void execute(Command command);
 }

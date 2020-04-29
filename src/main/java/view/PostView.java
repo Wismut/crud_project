@@ -1,7 +1,7 @@
 package view;
 
 
-import command.Command2;
+import command.Command;
 import controller.PostController;
 import model.Post;
 
@@ -52,7 +52,7 @@ public class PostView extends View<Post, Long> {
     }
 
     @Override
-    public void execute(Command2 command) {
+    public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:
                 try {
@@ -83,13 +83,14 @@ public class PostView extends View<Post, Long> {
                 try {
                     System.out.println("Type id");
                     Long id = Long.parseLong(MainView.getReader().readLine());
-                    System.out.println("Type content");
+                    System.out.println("Type new content");
                     String content = MainView.getReader().readLine();
-                    System.out.println("Type created date and time in the format " + LOCALDATETIME_PATTERN);
+                    System.out.println("Type new created date and time in the format " + LOCALDATETIME_PATTERN);
                     String created = MainView.getReader().readLine();
-                    System.out.println("Type updated date and time in the format " + LOCALDATETIME_PATTERN);
+                    System.out.println("Type new updated date and time in the format " + LOCALDATETIME_PATTERN);
                     String updated = MainView.getReader().readLine();
-                    Post post = new Post(content,
+                    Post post = new Post(id,
+                            content,
                             LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
                             LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
                     postController.update(post);
@@ -97,6 +98,22 @@ public class PostView extends View<Post, Long> {
                     e.printStackTrace();
                 }
                 return;
+            case GET_BY_ID:
+                try {
+                    System.out.println("Type post id");
+                    String id = MainView.getReader().readLine();
+                    Post post = postController.getById(Long.parseLong(id));
+                    System.out.println(post);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            case GET_ALL:
+                List<Post> posts = postController.getAll();
+                System.out.println(posts);
+                return;
+            default:
+                throw new RuntimeException("Unknown operation: " + command);
         }
     }
 }
