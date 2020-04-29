@@ -1,14 +1,15 @@
 package view;
 
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainView {
-    public void readViewType() {
+    public static View readViewType() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        View view = null;
+        View view;
         do {
             System.out.println("Type 1 if you want to work with users info");
             System.out.println("Type 2 if you want to work with posts info");
@@ -26,5 +27,6 @@ public class MainView {
             }
             view = ViewFactory.create(type);
         } while (view == null);
+        return view;
     }
 }

@@ -1,11 +1,24 @@
 package view;
 
 
-public interface View {
-    String USER_NUMBER = "1";
-    String POST_NUMBER = "2";
-    String REGION_NUMBER = "3";
-    String USER_LETTER = "u";
-    String POST_LETTER = "p";
-    String REGION_LETTER = "r";
+import java.util.List;
+
+public abstract class View<T, ID> {
+    static final String USER_NUMBER = "1";
+    static final String POST_NUMBER = "2";
+    static final String REGION_NUMBER = "3";
+    static final String USER_LETTER = "u";
+    static final String POST_LETTER = "p";
+    static final String REGION_LETTER = "r";
+    ID id;
+
+    abstract void deleteById(ID id);
+
+    abstract T save(T entity);
+
+    abstract T update(T entity);
+
+    abstract T getById(ID id);
+
+    abstract List<T> getAll();
 }

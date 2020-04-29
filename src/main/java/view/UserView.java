@@ -2,8 +2,11 @@ package view;
 
 
 import controller.UserController;
+import model.User;
 
-public class UserView implements View {
+import java.util.List;
+
+public class UserView extends View<User,Long> {
     private final UserController userController;
     private static UserView instance;
 
@@ -16,5 +19,30 @@ public class UserView implements View {
 
     private UserView(UserController userController) {
         this.userController = userController;
+    }
+
+    @Override
+    void deleteById(Long aLong) {
+
+    }
+
+    @Override
+    User save(User entity) {
+        return null;
+    }
+
+    @Override
+    User update(User entity) {
+        return null;
+    }
+
+    @Override
+    User getById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    List<User> getAll() {
+        return null;
     }
 }
