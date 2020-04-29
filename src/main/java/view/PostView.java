@@ -2,6 +2,7 @@ package view;
 
 
 import command.Command;
+import command.Command2;
 import controller.PostController;
 import model.Post;
 
@@ -50,5 +51,13 @@ public class PostView extends View<Post, Long> {
     @Override
     public Command getCommand() {
         return super.getCommand();
+    }
+
+    @Override
+    public void execute(Command2 command) {
+        switch (command) {
+            case DELETE_BY_ID:
+                postController.deleteById(1L);
+        }
     }
 }

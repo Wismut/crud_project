@@ -2,6 +2,7 @@ package view;
 
 
 import command.Command;
+import command.Command2;
 import command.CommandFactory;
 
 import java.io.IOException;
@@ -48,4 +49,6 @@ public abstract class View<T, ID> {
         }
         return null;
     }
+
+    public abstract void execute(Command2 command);
 }

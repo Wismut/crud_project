@@ -7,9 +7,4 @@ public class SaveCommand<T> implements Command<T> {
     public void execute() {
 
     }
-
-    @Override
-    public T createEntityFromUserInput() {
-        return null;
-    }
 }

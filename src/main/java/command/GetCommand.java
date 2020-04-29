@@ -1,10 +1,15 @@
 package command;
 
 
+import query_build_info.QueryBuildInfo;
 import view.View;
 
-public class GetCommand<T> implements Command<T> {
+public class GetCommand<T> implements Command<T>, QueryBuildInfo<T> {
     View view;
+
+    public GetCommand(View view) {
+        this.view = view;
+    }
 
     @Override
     public void execute() {
@@ -12,7 +17,7 @@ public class GetCommand<T> implements Command<T> {
     }
 
     @Override
-    public T createEntityFromUserInput() {
+    public T get() {
         return null;
     }
 }
