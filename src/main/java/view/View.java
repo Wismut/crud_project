@@ -2,7 +2,6 @@ package view;
 
 
 import command.Command;
-import command.CommandFactory;
 
 import java.io.IOException;
 
@@ -29,7 +28,8 @@ public interface View {
                 if ("q".equals(type)) {
                     System.exit(0);
                 }
-                command = CommandFactory.create(type);
+//                command = CommandFactory.create(type);
+                command = Command.getCommandByLetter(type);
             } while (command == null);
             return command;
         } catch (IOException e) {

@@ -14,6 +14,8 @@ public class CommandFactory {
                 return Command.SAVE;
             case MainView.UPDATE_COMMAND_LETTER:
                 return Command.UPDATE;
+            case MainView.GET_ALL_COMMAND_LETTER:
+                return Command.GET_ALL;
             default:
                 return null;
         }
