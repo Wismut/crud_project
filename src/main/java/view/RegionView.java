@@ -1,12 +1,13 @@
 package view;
 
 
+import command.Command;
 import controller.RegionController;
 import model.Region;
 
 import java.util.List;
 
-public class RegionView extends View<Region,Long> {
+public class RegionView extends View<Region, Long> {
     private final RegionController regionController;
     private static RegionView instance;
 
@@ -44,5 +45,10 @@ public class RegionView extends View<Region,Long> {
     @Override
     List<Region> getAll() {
         return regionController.getAll();
+    }
+
+    @Override
+    public Command getCommand() {
+        return super.getCommand();
     }
 }

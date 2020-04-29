@@ -1,5 +1,7 @@
 package command;
 
-public interface Command {
+public interface Command<T> {
     void execute();
+
+    T createEntityFromUserInput();
 }

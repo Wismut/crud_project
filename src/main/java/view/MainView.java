@@ -10,10 +10,11 @@ public class MainView {
     public static final String GET_COMMAND_LETTER = "g";
     public static final String DELETE_COMMAND_LETTER = "d";
     public static final String UPDATE_COMMAND_LETTER = "u";
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public View readViewType() {
         View view;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        try {
             String type;
             do {
                 System.out.println("Type " + View.USER_NUMBER + " or " + View.USER_LETTER + " if you want to work with users info");
@@ -31,5 +32,9 @@ public class MainView {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static BufferedReader getReader() {
+        return reader;
     }
 }

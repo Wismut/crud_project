@@ -1,3 +1,4 @@
+import command.Command;
 import model.Post;
 import model.Region;
 import model.User;
@@ -17,6 +18,8 @@ public class Main {
         MainView mainView = new MainView();
         View view = mainView.readViewType();
         System.out.println(view.getClass().getSimpleName());
+        Command command = view.getCommand();
+        System.out.println(command.getClass().getSimpleName());
 
 
 //        CrudRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();

@@ -1,6 +1,7 @@
 package view;
 
 
+import command.Command;
 import controller.UserController;
 import model.User;
 
@@ -44,5 +45,10 @@ public class UserView extends View<User,Long> {
     @Override
     List<User> getAll() {
         return null;
+    }
+
+    @Override
+    public Command getCommand() {
+        return super.getCommand();
     }
 }
