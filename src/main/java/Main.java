@@ -1,11 +1,12 @@
+import command.Command;
 import model.Post;
 import model.Region;
 import model.User;
 import repository.CrudRepository;
+import view.MainView;
+import view.View;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -14,14 +15,14 @@ import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-//        MainView mainView = new MainView();
-//        View view = mainView.readViewType();
-//        System.out.println(view.getClass().getSimpleName());
-//        Command command = view.getCommand();
-//        System.out.println(command.getClass().getSimpleName());
+        MainView mainView = new MainView();
+        View view = mainView.readViewType();
+        System.out.println(view.getClass().getSimpleName());
+        Command command = view.getCommand();
+        System.out.println(command);
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println(bufferedReader.readLine().length());
+//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+//        System.out.println(bufferedReader.readLine().length());
 
 //        CrudRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();
 //        CrudRepository<Post, Long> postRepository = JavaIOPostRepository.getInstance();

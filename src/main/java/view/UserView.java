@@ -23,77 +23,77 @@ public class UserView implements View<User, Long> {
         this.userController = userController;
     }
 
-    void deleteById(Long aLong) {
-
+    private void delete() {
+        try {
+            System.out.println("Type region id");
+            String id = MainView.getReader().readLine();
+            userController.deleteById(Long.parseLong(id));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    User save(User entity) {
+    private User save() {
+        try {
+            System.out.println("Type firstName");
+            String firstName = MainView.getReader().readLine();
+            System.out.println("Type lastName");
+            String lastName = MainView.getReader().readLine();
+            System.out.println("Type posts ids within comma");
+            String postsIds = MainView.getReader().readLine();
+            System.out.println("Type region id");
+            String regionId = MainView.getReader().readLine();
+            return userController.save(new User());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    User update(User entity) {
+    private User update() {
+        try {
+            System.out.println("Type id");
+            Long id = Long.parseLong(MainView.getReader().readLine());
+            System.out.println("Type new name");
+            String name = MainView.getReader().readLine();
+            return userController.update(new User());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    User getById(Long id) {
+    private User get() {
+        try {
+            System.out.println("Type id");
+            String id = MainView.getReader().readLine();
+            return userController.getById(Long.parseLong(id));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    List<User> getAll() {
-        return null;
+    private List<User> getAll() {
+        return userController.getAll();
     }
 
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:
-                try {
-                    System.out.println("Type region id");
-                    String id = MainView.getReader().readLine();
-                    userController.deleteById(Long.parseLong(id));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                delete();
                 return;
             case SAVE:
-                try {
-                    System.out.println("Type firstName");
-                    String firstName = MainView.getReader().readLine();
-                    System.out.println("Type lastName");
-                    String lastName = MainView.getReader().readLine();
-                    System.out.println("Type posts ids within comma");
-                    String postsIds = MainView.getReader().readLine();
-                    System.out.println("Type region id");
-                    String regionId = MainView.getReader().readLine();
-                    userController.save(new User());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                save();
                 return;
             case UPDATE:
-                try {
-                    System.out.println("Type id");
-                    Long id = Long.parseLong(MainView.getReader().readLine());
-                    System.out.println("Type new name");
-                    String name = MainView.getReader().readLine();
-                    userController.update(new User());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                update();
                 return;
             case GET_BY_ID:
-                try {
-                    System.out.println("Type id");
-                    String id = MainView.getReader().readLine();
-                    User user = userController.getById(Long.parseLong(id));
-                    System.out.println(user);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                get();
                 return;
             case GET_ALL:
-                List<User> users = userController.getAll();
-                System.out.println(users);
-                return;
+                getAll();
             default:
                 throw new RuntimeException("Unknown operation: " + command);
         }

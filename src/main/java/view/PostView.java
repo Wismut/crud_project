@@ -26,19 +26,19 @@ public class PostView implements View<Post,Long> {
         this.postController = postController;
     }
 
-    void deleteById(Long aLong) {
+    private void deleteById(Long aLong) {
 
     }
 
-    Post save(Post entity) {
+    private Post save(Post entity) {
         return null;
     }
 
-    Post update(Post entity) {
+    private Post update(Post entity) {
         return null;
     }
 
-    Post getById(Long aLong) {
+    private Post getById(Long aLong) {
         return null;
     }
 

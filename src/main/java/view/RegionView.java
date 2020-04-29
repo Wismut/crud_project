@@ -23,23 +23,23 @@ public class RegionView implements View<Region, Long> {
         this.regionController = regionController;
     }
 
-    void deleteById(Long id) {
+    private void deleteById(Long id) {
         regionController.deleteById(id);
     }
 
-    Region save(Region region) {
+    private Region save(Region region) {
         return regionController.save(region);
     }
 
-    Region update(Region region) {
+    private Region update(Region region) {
         return regionController.update(region);
     }
 
-    Region getById(Long id) {
+    private Region getById(Long id) {
         return regionController.getById(id);
     }
 
-    List<Region> getAll() {
+    private List<Region> getAll() {
         return regionController.getAll();
     }
 
