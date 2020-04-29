@@ -19,6 +19,10 @@ public class JavaIOPostRepository implements PostRepository {
     private static final String POST_REPOSITORY_PATH = REPOSITORY_PATH + "/posts.txt";
     private static PostRepository instance;
 
+    private JavaIOPostRepository() {
+
+    }
+
     public static PostRepository getInstance() {
         if (instance == null) {
             instance = new JavaIOPostRepository();

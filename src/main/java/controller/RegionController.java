@@ -17,7 +17,7 @@ public class RegionController {
         return instance;
     }
 
-    public RegionController(RegionRepository regionRepository) {
+    private RegionController(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
     }
 

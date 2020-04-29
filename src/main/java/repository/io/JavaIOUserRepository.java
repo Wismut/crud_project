@@ -22,7 +22,7 @@ public class JavaIOUserRepository implements UserRepository {
     private final CrudRepository<Region, Long> regionRepository;
     private static UserRepository instance;
 
-    public JavaIOUserRepository(CrudRepository<Post, Long> postRepository, CrudRepository<Region, Long> regionRepository) {
+    private JavaIOUserRepository(CrudRepository<Post, Long> postRepository, CrudRepository<Region, Long> regionRepository) {
         this.postRepository = postRepository;
         this.regionRepository = regionRepository;
     }

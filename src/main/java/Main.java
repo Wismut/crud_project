@@ -15,9 +15,9 @@ import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        CrudRepository<Region, Long> regionRepository = new JavaIORegionRepository();
-        CrudRepository<Post, Long> postRepository = new JavaIOPostRepository();
-        CrudRepository<User, Long> userRepository = new JavaIOUserRepository(postRepository, regionRepository);
+        CrudRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();
+        CrudRepository<Post, Long> postRepository = JavaIOPostRepository.getInstance();
+        CrudRepository<User, Long> userRepository = JavaIOUserRepository.getInstance();
         testRegions(regionRepository);
         testPosts(postRepository);
         testUsers(userRepository);

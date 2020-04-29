@@ -19,6 +19,10 @@ public class JavaIORegionRepository implements RegionRepository {
     private final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.txt";
     private static RegionRepository instance;
 
+    private JavaIORegionRepository() {
+
+    }
+
     public static RegionRepository getInstance() {
         if (instance == null) {
             instance = new JavaIORegionRepository();

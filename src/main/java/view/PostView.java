@@ -14,7 +14,7 @@ public class PostView implements View {
         return instance;
     }
 
-    public PostView(PostController postController) {
+    private PostView(PostController postController) {
         this.postController = postController;
     }
 }

@@ -14,7 +14,7 @@ public class UserView implements View {
         return instance;
     }
 
-    public UserView(UserController userController) {
+    private UserView(UserController userController) {
         this.userController = userController;
     }
 }

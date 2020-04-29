@@ -7,7 +7,7 @@ public class PostController {
     private final PostRepository postRepository;
     private static PostController instance;
 
-    public PostController(PostRepository postRepository) {
+    private PostController(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

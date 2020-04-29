@@ -14,7 +14,7 @@ public class RegionView implements View {
         return instance;
     }
 
-    public RegionView(RegionController regionController) {
+    private RegionView(RegionController regionController) {
         this.regionController = regionController;
     }
 }
