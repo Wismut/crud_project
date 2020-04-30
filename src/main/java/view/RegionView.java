@@ -5,8 +5,6 @@ import command.Command;
 import controller.RegionController;
 import model.Region;
 
-import java.io.IOException;
-
 public class RegionView implements View {
     private final RegionController regionController;
     private static RegionView instance;
@@ -29,46 +27,61 @@ public class RegionView implements View {
             id = MainView.getReader().readLine();
             regionController.deleteById(Long.parseLong(id));
             System.out.println("Region with id = " + id + " was successfully deleted");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Region with id = " + id + " wasn't deleted");
         }
     }
 
     private void save() {
+        String name = null;
         try {
             System.out.println("Type name");
-            String name = MainView.getReader().readLine();
-            regionController.save(new Region(name));
-        } catch (IOException e) {
+            name = MainView.getReader().readLine();
+            Region region = regionController.save(new Region(name));
+            System.out.println("New region with name " + region.getName() + " id = " + region.getId() + " was successfully saved");
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("New region with name = " + name + " wasn't saved");
         }
     }
 
     private void update() {
+        String id = null;
         try {
             System.out.println("Type id");
-            Long id = Long.parseLong(MainView.getReader().readLine());
+            id = MainView.getReader().readLine();
             System.out.println("Type new name");
             String name = MainView.getReader().readLine();
-            regionController.update(new Region(id, name));
-        } catch (IOException e) {
+            regionController.update(new Region(Long.parseLong(id),
+                    name));
+            System.out.println("Region with id = " + id + " was updated");
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Region with id = " + id + " wasn't updated");
         }
     }
 
     private void getOne() {
+        String id = null;
         try {
             System.out.println("Type id");
-            String id = MainView.getReader().readLine();
-            regionController.getById(Long.parseLong(id));
+            id = MainView.getReader().readLine();
+            Region region = regionController.getById(Long.parseLong(id));
+            if (region != null) {
+                System.out.println(region);
+            } else {
+                System.out.println("Region with id = " + id + " wasn't found");
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Region with id = " + id + " wasn't found");
         }
     }
 
     private void getAll() {
-        regionController.getAll();
+        regionController.getAll().stream()
+                .forEach(System.out::println);
     }
 
     public void execute(Command command) {
