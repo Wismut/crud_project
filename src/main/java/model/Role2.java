@@ -1,6 +1,6 @@
 package model;
 
 
-public enum Role {
+public enum Role2 {
     ADMIN, MODERATOR, USER
 }
