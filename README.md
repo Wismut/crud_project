@@ -1,4 +1,4 @@
-Task
+##Task
 
 Should implement a console CRUD application that has the following entities:
 
@@ -10,20 +10,18 @@ Should implement a console CRUD application that has the following entities:
 
  As a data warehouse, you must use text files:
 
- users.txt, posts.txt, regions.txt
+ * users.txt
+ * posts.txt
+ * regions.txt
 
-
- The user in the console should be able to create, retrieve, edit, and delete data.
-
+ The user in the console should be able to create, retrieve, edit and delete data.
 
  Layers:
 
- model - POJO classes
-
- repository - classes that implement access to text files
- controller - processing requests from the user
- view - all data necessary for working with the console
-
+ * model - POJO classes
+ * repository - classes that implement access to text files
+ * controller - processing requests from the user
+ * view - all data necessary for working with the console
 
  For example: User, UserRepository, UserController, UserView, etc.
 
@@ -34,6 +32,25 @@ Should implement a console CRUD application that has the following entities:
 
  class JavaIOUserRepositoryImpl implements UserRepository
 
-
  The result of the task should be a separate repository with a README.md file that contains a description of the task, project and instructions for launching the application through the command line.
  
+ ## Project
+ 
+ ### Directory layout
+ 
+     .
+     ├── docs                              # Documentation files (alternatively `doc`)
+     ├── src
+           ├── main
+                 ├── java
+                       ├── command          
+                       ├──       # Source files (alternatively `lib` or `app`)
+                       ├──       # Source files (alternatively `lib` or `app`)
+                       ├──       # Source files (alternatively `lib` or `app`)
+                       ├──       # Source files (alternatively `lib` or `app`)
+                       ├──       # Source files (alternatively `lib` or `app`)
+     ├── test                    # Automated tests (alternatively `spec` or `tests`)
+     ├── tools                   # Tools and utilities
+     ├── LICENSE
+     └── README.md
+
