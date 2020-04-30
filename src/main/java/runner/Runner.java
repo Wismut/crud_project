@@ -1,4 +1,4 @@
-package main;
+package runner;
 
 import model.Post;
 import model.Region;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class Main {
+public class Runner {
     public static void main(String[] args) throws IOException {
         new MainView().run();
 
