@@ -6,7 +6,6 @@ import controller.RegionController;
 import model.Region;
 
 import java.io.IOException;
-import java.util.List;
 
 public class RegionView implements View {
     private final RegionController regionController;
@@ -24,52 +23,52 @@ public class RegionView implements View {
     }
 
     private void delete() {
+        String id = null;
         try {
             System.out.println("Type region id");
-            String id = MainView.getReader().readLine();
+            id = MainView.getReader().readLine();
             regionController.deleteById(Long.parseLong(id));
+            System.out.println("Region with id = " + id + " was successfully deleted");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Region with id = " + id + " wasn't deleted");
         }
     }
 
-    private Region save() {
+    private void save() {
         try {
             System.out.println("Type name");
             String name = MainView.getReader().readLine();
-            return regionController.save(new Region(name));
+            regionController.save(new Region(name));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    private Region update() {
+    private void update() {
         try {
             System.out.println("Type id");
             Long id = Long.parseLong(MainView.getReader().readLine());
             System.out.println("Type new name");
             String name = MainView.getReader().readLine();
-            return regionController.update(new Region(id, name));
+            regionController.update(new Region(id, name));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    private Region getOne() {
+    private void getOne() {
         try {
             System.out.println("Type id");
             String id = MainView.getReader().readLine();
-            return regionController.getById(Long.parseLong(id));
-        } catch (IOException e) {
+            regionController.getById(Long.parseLong(id));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    private List<Region> getAll() {
-        return regionController.getAll();
+    private void getAll() {
+        regionController.getAll();
     }
 
     public void execute(Command command) {
@@ -78,16 +77,16 @@ public class RegionView implements View {
                 delete();
                 return;
             case SAVE:
-                System.out.println(save());
+                save();
                 return;
             case UPDATE:
-                System.out.println(update());
+                update();
                 return;
             case GET_BY_ID:
-                System.out.println(getOne());
+                getOne();
                 return;
             case GET_ALL:
-                System.out.println(getAll());
+                getAll();
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);

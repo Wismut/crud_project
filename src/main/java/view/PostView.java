@@ -5,7 +5,6 @@ import command.Command;
 import controller.PostController;
 import model.Post;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,7 +32,7 @@ public class PostView implements View {
             id = MainView.getReader().readLine();
             postController.deleteById(Long.parseLong(id));
             System.out.println("Post with id = " + id + " was successfully deleted");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Post with id = " + id + " wasn't deleted");
         }
@@ -45,15 +44,17 @@ public class PostView implements View {
             System.out.println("Type content");
             content = MainView.getReader().readLine();
             System.out.println("Type created date and time in the format " + LOCALDATETIME_PATTERN);
+            System.out.println("For example " + LocalDateTime.now().format(DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
             String created = MainView.getReader().readLine();
             System.out.println("Type updated date and time in the format " + LOCALDATETIME_PATTERN);
+            System.out.println("For example " + LocalDateTime.now().format(DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
             String updated = MainView.getReader().readLine();
             Post post = new Post(content,
                     LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
                     LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
-            postController.save(post);
-            System.out.println("New post with content = '" + content + "' was successfully saved");
-        } catch (IOException e) {
+            Post savedPost = postController.save(post);
+            System.out.println("New post with content = '" + content + "' and id = " + savedPost.getId() + " was successfully saved");
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("New post with content = '" + content + "' wasn't saved");
         }
@@ -76,7 +77,7 @@ public class PostView implements View {
                     LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
             postController.update(post);
             System.out.println("Post with id = " + id + " was successfully updated");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Post with id = " + id + " wasn't updated");
         }
@@ -93,7 +94,7 @@ public class PostView implements View {
             } else {
                 System.out.println("Post with id = " + id + " wasn't found");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Post with id = " + id + " wasn't found");
         }
