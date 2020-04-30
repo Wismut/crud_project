@@ -80,6 +80,7 @@ public class RegionView implements View {
     }
 
     private void getAll() {
+        System.out.println("Regions:");
         regionController.getAll().stream()
                 .forEach(System.out::println);
     }

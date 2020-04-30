@@ -38,7 +38,7 @@ public class UserView implements View {
         }
     }
 
-    private User save() {
+    private void save() {
         try {
             System.out.println("Type firstName");
             String firstName = MainView.getReader().readLine();
@@ -52,20 +52,22 @@ public class UserView implements View {
             System.out.println("Type region id");
             Long regionId = Long.parseLong(MainView.getReader().readLine());
             Region region = new Region(regionId, null);
-            return userController.save(new User(firstName,
+            User user = userController.save(new User(firstName,
                     lastName,
                     posts,
                     region));
-        } catch (IOException e) {
+            System.out.println("New user with id = " + user.getId() + " was saved successfully");
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("New user wasn't saved");
         }
-        return null;
     }
 
-    private User update() {
+    private void update() {
+        String id = null;
         try {
             System.out.println("Type id");
-            Long id = Long.parseLong(MainView.getReader().readLine());
+            id = MainView.getReader().readLine();
             System.out.println("Type firstName");
             String firstName = MainView.getReader().readLine();
             System.out.println("Type lastName");
@@ -78,30 +80,35 @@ public class UserView implements View {
             System.out.println("Type region id");
             Long regionId = Long.parseLong(MainView.getReader().readLine());
             Region region = new Region(regionId, null);
-            return userController.update(new User(id,
+            userController.update(new User(Long.parseLong(id),
                     firstName,
                     lastName,
                     posts,
                     region));
-        } catch (IOException e) {
+            System.out.println("User with id = " + id + " was updated successfully");
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("User with id = " + id + " wasn't updated");
         }
-        return null;
     }
 
-    private User get() {
+    private void get() {
+        String id = null;
         try {
             System.out.println("Type id");
-            String id = MainView.getReader().readLine();
-            return userController.getById(Long.parseLong(id));
-        } catch (IOException e) {
+            id = MainView.getReader().readLine();
+            User user = userController.getById(Long.parseLong(id));
+            System.out.println(user);
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("User with id = " + id + " wasn't found");
         }
-        return null;
     }
 
-    private List<User> getAll() {
-        return userController.getAll();
+    private void getAll() {
+        System.out.println("Users:");
+        userController.getAll().stream()
+        .forEach(System.out::println);
     }
 
     public void execute(Command command) {
@@ -110,16 +117,16 @@ public class UserView implements View {
                 delete();
                 return;
             case SAVE:
-                System.out.println(save());
+                save();
                 return;
             case UPDATE:
-                System.out.println(update());
+                update();
                 return;
             case GET_BY_ID:
-                System.out.println(get());
+                get();
                 return;
             case GET_ALL:
-                System.out.println(getAll());
+                getAll();
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);
