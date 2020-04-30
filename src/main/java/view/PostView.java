@@ -27,19 +27,23 @@ public class PostView implements View {
     }
 
     private void delete() {
+        String id = null;
         try {
             System.out.println("Type post id");
-            String id = MainView.getReader().readLine();
+            id = MainView.getReader().readLine();
             postController.deleteById(Long.parseLong(id));
+            System.out.println("Post with id = " + id + " was successfully deleted");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Post with id = " + id + " wasn't deleted");
         }
     }
 
-    private Post save() {
+    private void save() {
+        String content = null;
         try {
             System.out.println("Type content");
-            String content = MainView.getReader().readLine();
+            content = MainView.getReader().readLine();
             System.out.println("Type created date and time in the format " + LOCALDATETIME_PATTERN);
             String created = MainView.getReader().readLine();
             System.out.println("Type updated date and time in the format " + LOCALDATETIME_PATTERN);
@@ -47,47 +51,59 @@ public class PostView implements View {
             Post post = new Post(content,
                     LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
                     LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
-            return postController.save(post);
+            postController.save(post);
+            System.out.println("New post with content = '" + content + "' was successfully saved");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("New post with content = '" + content + "' wasn't saved");
         }
-        return null;
     }
 
-    private Post update() {
+    private void update() {
+        String id = null;
         try {
             System.out.println("Type id");
-            Long id = Long.parseLong(MainView.getReader().readLine());
+            id = MainView.getReader().readLine();
             System.out.println("Type new content");
             String content = MainView.getReader().readLine();
             System.out.println("Type new created date and time in the format " + LOCALDATETIME_PATTERN);
             String created = MainView.getReader().readLine();
             System.out.println("Type new updated date and time in the format " + LOCALDATETIME_PATTERN);
             String updated = MainView.getReader().readLine();
-            Post post = new Post(id,
+            Post post = new Post(Long.parseLong(id),
                     content,
                     LocalDateTime.parse(created, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)),
                     LocalDateTime.parse(updated, DateTimeFormatter.ofPattern(LOCALDATETIME_PATTERN)));
-            return postController.update(post);
+            postController.update(post);
+            System.out.println("Post with id = " + id + " was successfully updated");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Post with id = " + id + " wasn't updated");
         }
-        return null;
     }
 
-    private Post getOne() {
+    private void getOne() {
+        String id = null;
         try {
             System.out.println("Type post id");
-            String id = MainView.getReader().readLine();
-            return postController.getById(Long.parseLong(id));
+            id = MainView.getReader().readLine();
+            Post post = postController.getById(Long.parseLong(id));
+            if (post != null) {
+                System.out.println(post);
+            } else {
+                System.out.println("Post with id = " + id + " wasn't found");
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Post with id = " + id + " wasn't found");
         }
-        return null;
     }
 
-    List<Post> getAll() {
-        return postController.getAll();
+    void getAll() {
+        List<Post> posts = postController.getAll();
+        System.out.println("Posts:");
+        posts.stream()
+                .forEach(System.out::println);
     }
 
     public void execute(Command command) {
@@ -96,16 +112,16 @@ public class PostView implements View {
                 delete();
                 return;
             case SAVE:
-                System.out.println(save());
+                save();
                 return;
             case UPDATE:
-                System.out.println(update());
+                update();
                 return;
             case GET_BY_ID:
                 getOne();
                 return;
             case GET_ALL:
-                System.out.println(getAll());
+                getAll();
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);
