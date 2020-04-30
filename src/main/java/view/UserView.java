@@ -8,7 +8,6 @@ import model.Region;
 import model.User;
 import repository.CrudRepository;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,17 +27,20 @@ public class UserView implements View {
         this.userController = userController;
     }
 
-    private void delete() {
+    private void deleteAndPrint() {
+        String id = null;
         try {
-            System.out.println("Type region id");
-            String id = MainView.getReader().readLine();
+            System.out.println("Type user id");
+            id = MainView.getReader().readLine();
             userController.deleteById(Long.parseLong(id));
-        } catch (IOException e) {
+            System.out.println("User with id = " + id + " was deleted");
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("User with id = " + id + " wasn't deleted");
         }
     }
 
-    private void save() {
+    private void saveAndPrint() {
         try {
             System.out.println("Type firstName");
             String firstName = MainView.getReader().readLine();
@@ -63,7 +65,7 @@ public class UserView implements View {
         }
     }
 
-    private void update() {
+    private void updateAndPrint() {
         String id = null;
         try {
             System.out.println("Type id");
@@ -92,7 +94,7 @@ public class UserView implements View {
         }
     }
 
-    private void get() {
+    private void getOneAndPrint() {
         String id = null;
         try {
             System.out.println("Type id");
@@ -105,28 +107,33 @@ public class UserView implements View {
         }
     }
 
-    private void getAll() {
-        System.out.println("Users:");
-        userController.getAll().stream()
-        .forEach(System.out::println);
+    private void getAllAndPrint() {
+        List<User> users = userController.getAll();
+        if (users.isEmpty()) {
+            System.out.println("Users list is empty");
+        } else {
+            System.out.println("Users:");
+            users.stream()
+                    .forEach(System.out::println);
+        }
     }
 
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:
-                delete();
+                deleteAndPrint();
                 return;
             case SAVE:
-                save();
+                saveAndPrint();
                 return;
             case UPDATE:
-                update();
+                updateAndPrint();
                 return;
             case GET_BY_ID:
-                get();
+                getOneAndPrint();
                 return;
             case GET_ALL:
-                getAll();
+                getAllAndPrint();
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);

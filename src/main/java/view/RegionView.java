@@ -5,6 +5,8 @@ import command.Command;
 import controller.RegionController;
 import model.Region;
 
+import java.util.List;
+
 public class RegionView implements View {
     private final RegionController regionController;
     private static RegionView instance;
@@ -20,7 +22,7 @@ public class RegionView implements View {
         this.regionController = regionController;
     }
 
-    private void delete() {
+    private void deleteAndPrint() {
         String id = null;
         try {
             System.out.println("Type region id");
@@ -33,7 +35,7 @@ public class RegionView implements View {
         }
     }
 
-    private void save() {
+    private void saveAndPrint() {
         String name = null;
         try {
             System.out.println("Type name");
@@ -46,7 +48,7 @@ public class RegionView implements View {
         }
     }
 
-    private void update() {
+    private void updateAndPrint() {
         String id = null;
         try {
             System.out.println("Type id");
@@ -62,7 +64,7 @@ public class RegionView implements View {
         }
     }
 
-    private void getOne() {
+    private void getOneAndPrint() {
         String id = null;
         try {
             System.out.println("Type id");
@@ -79,28 +81,33 @@ public class RegionView implements View {
         }
     }
 
-    private void getAll() {
-        System.out.println("Regions:");
-        regionController.getAll().stream()
-                .forEach(System.out::println);
+    private void getAllAndPrint() {
+        List<Region> regions = regionController.getAll();
+        if (regions.isEmpty()) {
+            System.out.println("Regions list is empty");
+        } else {
+            System.out.println("Regions:");
+            regions.stream()
+                    .forEach(System.out::println);
+        }
     }
 
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:
-                delete();
+                deleteAndPrint();
                 return;
             case SAVE:
-                save();
+                saveAndPrint();
                 return;
             case UPDATE:
-                update();
+                updateAndPrint();
                 return;
             case GET_BY_ID:
-                getOne();
+                getOneAndPrint();
                 return;
             case GET_ALL:
-                getAll();
+                getAllAndPrint();
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);

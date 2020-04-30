@@ -25,7 +25,7 @@ public class PostView implements View {
         this.postController = postController;
     }
 
-    private void delete() {
+    private void deleteAndPrint() {
         String id = null;
         try {
             System.out.println("Type post id");
@@ -38,7 +38,7 @@ public class PostView implements View {
         }
     }
 
-    private void save() {
+    private void saveAndPrint() {
         String content = null;
         try {
             System.out.println("Type content");
@@ -60,7 +60,7 @@ public class PostView implements View {
         }
     }
 
-    private void update() {
+    private void updateAndPrint() {
         String id = null;
         try {
             System.out.println("Type id");
@@ -83,7 +83,7 @@ public class PostView implements View {
         }
     }
 
-    private void getOne() {
+    private void getOneAndPrint() {
         String id = null;
         try {
             System.out.println("Type post id");
@@ -100,29 +100,33 @@ public class PostView implements View {
         }
     }
 
-    void getAll() {
+    void getAllAndPrint() {
         List<Post> posts = postController.getAll();
-        System.out.println("Posts:");
-        posts.stream()
-                .forEach(System.out::println);
+        if (posts.isEmpty()) {
+            System.out.println("Posts list is empty");
+        } else {
+            System.out.println("Posts:");
+            posts.stream()
+                    .forEach(System.out::println);
+        }
     }
 
     public void execute(Command command) {
         switch (command) {
             case DELETE_BY_ID:
-                delete();
+                deleteAndPrint();
                 return;
             case SAVE:
-                save();
+                saveAndPrint();
                 return;
             case UPDATE:
-                update();
+                updateAndPrint();
                 return;
             case GET_BY_ID:
-                getOne();
+                getOneAndPrint();
                 return;
             case GET_ALL:
-                getAll();
+                getAllAndPrint();
                 return;
             default:
                 throw new RuntimeException("Unknown operation: " + command);
