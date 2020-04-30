@@ -39,18 +39,18 @@ Should implement a console CRUD application that has the following entities:
  ### Directory layout
  
      .
-     ├── docs                              # Documentation files (alternatively `doc`)
      ├── src
-           ├── main
-                 ├── java
-                       ├── command          
-                       ├──       # Source files (alternatively `lib` or `app`)
-                       ├──       # Source files (alternatively `lib` or `app`)
-                       ├──       # Source files (alternatively `lib` or `app`)
-                       ├──       # Source files (alternatively `lib` or `app`)
-                       ├──       # Source files (alternatively `lib` or `app`)
-     ├── test                    # Automated tests (alternatively `spec` or `tests`)
-     ├── tools                   # Tools and utilities
-     ├── LICENSE
+          ├── main
+               ├── java
+                    ├── command          # Actions with database
+                    ├── controller       # Controllers layout
+                    ├── model            # Models layout
+                    ├── repository       # Repositories layout
+                         └── io         # IO implementations of repositories
+                    ├── runner           # Class with main method
+                    └── view             # Views layout
+          ├── resources                    # Resources
+               └── files                  # Data warehouse
+     ├── .gitignore
      └── README.md
 
