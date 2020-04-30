@@ -23,21 +23,21 @@ Should implement a console CRUD application that has the following entities:
  * controller - processing requests from the user
  * view - all data necessary for working with the console
 
- For example: User, UserRepository, UserController, UserView, etc.
+For example: User, UserRepository, UserController, UserView, etc.
 
- For the repository layer, it is desirable to use the basic interface:
- interface GenericRepository <T, ID>
+For the repository layer, it is desirable to use the basic interface:
+```interface GenericRepository <T, ID>```
 
- interface UserRepository extends GenericRepository <User, Long>
+```interface UserRepository extends GenericRepository <User, Long>```
 
- class JavaIOUserRepositoryImpl implements UserRepository
+```class JavaIOUserRepositoryImpl implements UserRepository```
 
- The result of the task should be a separate repository with a README.md file that contains a description of the task, project and instructions for launching the application through the command line.
- 
- ## Project
- 
- ### Directory layout
- 
+The result of the task should be a separate repository with a README.md file that contains a description of the task, project and instructions for launching the application through the command line.
+
+##Project
+
+###Directory layout
+
      .
      ├── src
           ├── main
@@ -46,11 +46,30 @@ Should implement a console CRUD application that has the following entities:
                     ├── controller       # Controllers layout
                     ├── model            # Models layout
                     ├── repository       # Repositories layout
-                         └── io         # IO implementations of repositories
+                         └── io          # IO implementations of repositories
                     ├── runner           # Class with main method
                     └── view             # Views layout
-          ├── resources                    # Resources
-               └── files                  # Data warehouse
+          ├── resources                  # Resources
+               └── files                 # Data warehouse
      ├── .gitignore
      └── README.md
 
+###Repository
+
+https://github.com/Wismut/crud_project
+
+###Compiling
+
+1. ```git clone https://github.com/Wismut/crud_project```
+2. ```cd crud_project```
+3. for Windows 
+```dir /s /B *.java > sources.txt```
+   for Linux/MacOS 
+```find -name "*.java" > sources.txt```
+4. ```javac @sources.txt```
+
+###Running
+
+```java -cp src\main\java\ runner.Runner```
+
+And follow the instractions in the console
