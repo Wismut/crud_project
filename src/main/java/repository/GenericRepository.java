@@ -2,7 +2,7 @@ package repository;
 
 import java.util.List;
 
-public interface CrudRepository<T, ID> {
+public interface GenericRepository<T, ID> {
     String REPOSITORY_PATH = "src/main/resources/files";
     String DELIMITER = ",";
     String PREFIX = "{";

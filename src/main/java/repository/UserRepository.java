@@ -2,6 +2,6 @@ package repository;
 
 import model.User;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends GenericRepository<User, Long> {
 
 }

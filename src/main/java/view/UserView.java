@@ -6,7 +6,7 @@ import controller.UserController;
 import model.Post;
 import model.Region;
 import model.User;
-import repository.CrudRepository;
+import repository.GenericRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +48,7 @@ public class UserView implements View {
             String lastName = MainView.getReader().readLine();
             System.out.println("Type posts ids within comma");
             String postsIds = MainView.getReader().readLine();
-            List<Post> posts = Arrays.stream(postsIds.split(CrudRepository.DELIMITER))
+            List<Post> posts = Arrays.stream(postsIds.split(GenericRepository.DELIMITER))
                     .map(s -> new Post(Long.parseLong(s)))
                     .collect(Collectors.toList());
             System.out.println("Type region id");
@@ -76,7 +76,7 @@ public class UserView implements View {
             String lastName = MainView.getReader().readLine();
             System.out.println("Type posts ids within comma");
             String postsIds = MainView.getReader().readLine();
-            List<Post> posts = Arrays.stream(postsIds.split(CrudRepository.DELIMITER))
+            List<Post> posts = Arrays.stream(postsIds.split(GenericRepository.DELIMITER))
                     .map(s -> new Post(Long.parseLong(s)))
                     .collect(Collectors.toList());
             System.out.println("Type region id");

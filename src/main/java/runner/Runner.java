@@ -3,7 +3,7 @@ package runner;
 import model.Post;
 import model.Region;
 import model.User;
-import repository.CrudRepository;
+import repository.GenericRepository;
 import repository.io.JavaIOPostRepository;
 import repository.io.JavaIORegionRepository;
 import repository.io.JavaIOUserRepository;
@@ -24,15 +24,15 @@ public class Runner {
     }
 
     private static void test() throws IOException {
-        CrudRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();
-        CrudRepository<Post, Long> postRepository = JavaIOPostRepository.getInstance();
-        CrudRepository<User, Long> userRepository = JavaIOUserRepository.getInstance();
+        GenericRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();
+        GenericRepository<Post, Long> postRepository = JavaIOPostRepository.getInstance();
+        GenericRepository<User, Long> userRepository = JavaIOUserRepository.getInstance();
         testRegions(regionRepository);
         testPosts(postRepository);
         testUsers(userRepository);
     }
 
-    private static void testRegions(CrudRepository<Region, Long> regionRepository) throws IOException {
+    private static void testRegions(GenericRepository<Region, Long> regionRepository) throws IOException {
         System.out.println("Region with id = 1:");
         System.out.println(regionRepository.getById(1L));
         System.out.println("All regions:");
@@ -57,13 +57,11 @@ public class Runner {
         System.out.println(regionRepository.getById(3L));
         System.out.println("All regions:");
         System.out.println(regionRepository.getAll());
-
         Files.write(Paths.get("src/main/resources/files/regions.txt"), "1,UA\n2,YTR\n3,UK\n".getBytes());
-
         System.out.println();
     }
 
-    private static void testPosts(CrudRepository<Post, Long> postRepository) throws IOException {
+    private static void testPosts(GenericRepository<Post, Long> postRepository) throws IOException {
         System.out.println("Post with id = 1:");
         System.out.println(postRepository.getById(1L));
         System.out.println("All posts:");
@@ -88,14 +86,12 @@ public class Runner {
         System.out.println(postRepository.getById(3L));
         System.out.println("All posts:");
         System.out.println(postRepository.getAll());
-
         Files.write(Paths.get("src/main/resources/files/posts.txt"),
                 "1,content1,1587897426,1587897428\n2,content2,1587893426,1587893428\n3,content3,1587887426,1587887429\n".getBytes());
-
         System.out.println();
     }
 
-    private static void testUsers(CrudRepository<User, Long> userRepository) throws IOException {
+    private static void testUsers(GenericRepository<User, Long> userRepository) throws IOException {
         System.out.println("User with id = 1:");
         System.out.println(userRepository.getById(1L));
         System.out.println("All users:");
@@ -120,10 +116,8 @@ public class Runner {
         System.out.println(userRepository.getById(3L));
         System.out.println("All users:");
         System.out.println(userRepository.getAll());
-
         Files.write(Paths.get("src/main/resources/files/users.txt"),
                 "1,user1,surname1,{1_3},1\n2,user2,sn2,{1},2\n3,third_user,lastname,{3},1\n4,name,name,{2},3\n".getBytes());
-
         System.out.println();
     }
 }
