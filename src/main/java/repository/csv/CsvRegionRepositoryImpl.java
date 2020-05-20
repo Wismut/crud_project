@@ -4,10 +4,13 @@ import model.Region;
 import repository.RegionRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CsvRegionRepositoryImpl implements RegionRepository {
+    private static final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.csv";
+
     @Override
-    public Region getById(Long id) {
+    public Optional<Region> getById(Long id) {
         return null;
     }
 

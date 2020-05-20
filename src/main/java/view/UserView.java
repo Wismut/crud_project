@@ -10,6 +10,7 @@ import repository.GenericRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserView implements View {
@@ -99,7 +100,7 @@ public class UserView implements View {
         try {
             System.out.println("Type id");
             id = MainView.getReader().readLine();
-            User user = userController.getById(Long.parseLong(id));
+            Optional<User> user = userController.getById(Long.parseLong(id));
             System.out.println(user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,8 +114,7 @@ public class UserView implements View {
             System.out.println("Users list is empty");
         } else {
             System.out.println("Users:");
-            users.stream()
-                    .forEach(System.out::println);
+            users.forEach(System.out::println);
         }
     }
 

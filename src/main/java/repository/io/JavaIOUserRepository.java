@@ -36,7 +36,7 @@ public class JavaIOUserRepository implements UserRepository {
     }
 
     @Override
-    public User getById(Long id) {
+    public Optional<User> getById(Long id) {
         return getUserById(id);
     }
 
@@ -68,30 +68,29 @@ public class JavaIOUserRepository implements UserRepository {
     public User update(User user) {
         Objects.requireNonNull(user);
         Objects.requireNonNull(user.getId());
-        User oldUser = getUserById(user.getId());
-        if (oldUser == null) {
+        Optional<User> oldUser = getUserById(user.getId());
+        if (!oldUser.isPresent()) {
             return user;
         }
         List<User> filteredUsers = getAllUsers()
                 .stream()
                 .filter(u -> !user.getId().equals(u.getId()))
                 .collect(Collectors.toList());
-        filteredUsers.add(merge(oldUser, user));
+        filteredUsers.add(merge(oldUser.get(), user));
         writeToDatabase(filteredUsers);
         return user;
     }
 
-    private User getUserById(Long id) {
+    private Optional<User> getUserById(Long id) {
         Objects.requireNonNull(id);
         try {
             return getAllUsers()
                     .stream()
                     .filter(u -> id.equals(u.getId()))
-                    .findFirst()
-                    .orElse(null);
+                    .findFirst();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -169,7 +168,7 @@ public class JavaIOUserRepository implements UserRepository {
         } else {
             posts = Collections.emptyList();
         }
-        Region region = regionRepository.getById(Long.parseLong(split[4]));
+        Region region = regionRepository.getById(Long.parseLong(split[4])).orElseThrow(() -> new RuntimeException("Exception during region parse"));
         return new User(id,
                 firstName,
                 lastName,

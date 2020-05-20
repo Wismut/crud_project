@@ -5,6 +5,7 @@ import repository.UserRepository;
 import repository.io.JavaIOUserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserController {
     private final UserRepository userRepository;
@@ -33,7 +34,7 @@ public class UserController {
         return userRepository.update(user);
     }
 
-    public User getById(Long id){
+    public Optional<User> getById(Long id){
         return userRepository.getById(id);
     }
 

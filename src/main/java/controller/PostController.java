@@ -5,6 +5,7 @@ import repository.PostRepository;
 import repository.io.JavaIOPostRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PostController {
     private final PostRepository postRepository;
@@ -37,7 +38,7 @@ public class PostController {
         return postRepository.getAll();
     }
 
-    public Post getById(Long id) {
+    public Optional<Post> getById(Long id) {
         return postRepository.getById(id);
     }
 }

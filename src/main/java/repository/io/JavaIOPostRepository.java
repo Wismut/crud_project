@@ -31,7 +31,7 @@ public class JavaIOPostRepository implements PostRepository {
     }
 
     @Override
-    public Post getById(Long id) {
+    public Optional<Post> getById(Long id) {
         return getPostById(id);
     }
 
@@ -63,30 +63,29 @@ public class JavaIOPostRepository implements PostRepository {
     public Post update(Post post) {
         Objects.requireNonNull(post);
         Objects.requireNonNull(post.getId());
-        Post oldPost = getPostById(post.getId());
-        if (oldPost == null) {
+        Optional<Post> oldPost = getPostById(post.getId());
+        if (!oldPost.isPresent()) {
             return post;
         }
         List<Post> filteredPosts = getAllPosts()
                 .stream()
                 .filter(p -> !post.getId().equals(p.getId()))
                 .collect(Collectors.toList());
-        filteredPosts.add(merge(oldPost, post));
+        filteredPosts.add(merge(oldPost.get(), post));
         writeToDatabase(filteredPosts);
         return post;
     }
 
-    private Post getPostById(Long id) {
+    private Optional<Post> getPostById(Long id) {
         Objects.requireNonNull(id);
         try {
             return getAllPosts()
                     .stream()
                     .filter(p -> id.equals(p.getId()))
-                    .findFirst()
-                    .orElse(null);
+                    .findFirst();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 

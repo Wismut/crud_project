@@ -5,6 +5,7 @@ import repository.RegionRepository;
 import repository.io.JavaIORegionRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RegionController {
     private final RegionRepository regionRepository;
@@ -37,7 +38,7 @@ public class RegionController {
         return regionRepository.getAll();
     }
 
-    public Region getById(Long id) {
+    public Optional<Region> getById(Long id) {
         return regionRepository.getById(id);
     }
 }

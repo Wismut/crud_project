@@ -4,10 +4,13 @@ import model.User;
 import repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CsvUserRepositoryImpl implements UserRepository {
+    private static final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.csv";
+
     @Override
-    public User getById(Long id) {
+    public Optional<User> getById(Long id) {
         return null;
     }
 

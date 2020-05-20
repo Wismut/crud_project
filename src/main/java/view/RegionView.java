@@ -6,6 +6,7 @@ import controller.RegionController;
 import model.Region;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RegionView implements View {
     private final RegionController regionController;
@@ -69,8 +70,8 @@ public class RegionView implements View {
         try {
             System.out.println("Type id");
             id = MainView.getReader().readLine();
-            Region region = regionController.getById(Long.parseLong(id));
-            if (region != null) {
+            Optional<Region> region = regionController.getById(Long.parseLong(id));
+            if (region.isPresent()) {
                 System.out.println(region);
             } else {
                 System.out.println("Region with id = " + id + " wasn't found");

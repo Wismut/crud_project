@@ -31,7 +31,7 @@ public class JavaIORegionRepository implements RegionRepository {
     }
 
     @Override
-    public Region getById(Long id) {
+    public Optional<Region> getById(Long id) {
         return getRegionById(id);
     }
 
@@ -96,17 +96,16 @@ public class JavaIORegionRepository implements RegionRepository {
         }
     }
 
-    private Region getRegionById(Long id) {
+    private Optional<Region> getRegionById(Long id) {
         Objects.requireNonNull(id);
         try {
             return getAllRegions()
                     .stream()
                     .filter(r -> id.equals(r.getId()))
-                    .findFirst()
-                    .orElse(null);
+                    .findFirst();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 

@@ -1,6 +1,7 @@
 package repository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenericRepository<T, ID> {
     String REPOSITORY_PATH = "src/main/resources/files";
@@ -8,7 +9,7 @@ public interface GenericRepository<T, ID> {
     String PREFIX = "{";
     String SUFFIX = "}";
 
-    T getById(ID id);
+    Optional<T> getById(ID id);
 
     List<T> getAll();
 

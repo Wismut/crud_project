@@ -8,6 +8,7 @@ import model.Post;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class PostView implements View {
     private final PostController postController;
@@ -88,8 +89,8 @@ public class PostView implements View {
         try {
             System.out.println("Type post id");
             id = MainView.getReader().readLine();
-            Post post = postController.getById(Long.parseLong(id));
-            if (post != null) {
+            Optional<Post> post = postController.getById(Long.parseLong(id));
+            if (post.isPresent()) {
                 System.out.println(post);
             } else {
                 System.out.println("Post with id = " + id + " wasn't found");
@@ -106,8 +107,7 @@ public class PostView implements View {
             System.out.println("Posts list is empty");
         } else {
             System.out.println("Posts:");
-            posts.stream()
-                    .forEach(System.out::println);
+            posts.forEach(System.out::println);
         }
     }
 
