@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CsvRegionRepositoryImpl implements RegionRepository {
-    private static final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.csv";
+    private static final String REGION_REPOSITORY_PATH = CSV_REPOSITORY_PATH + "/regions.csv";
 
     @Override
     public Optional<Region> getById(Long id) {

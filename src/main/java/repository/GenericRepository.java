@@ -5,6 +5,8 @@ import java.util.Optional;
 
 public interface GenericRepository<T, ID> {
     String REPOSITORY_PATH = "src/main/resources/files";
+    String CSV_REPOSITORY_PATH = REPOSITORY_PATH + "/csv";
+    String TXT_REPOSITORY_PATH = REPOSITORY_PATH + "/txt";
     String DELIMITER = ",";
     String PREFIX = "{";
     String SUFFIX = "}";

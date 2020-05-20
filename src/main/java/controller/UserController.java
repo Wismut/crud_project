@@ -2,21 +2,12 @@ package controller;
 
 import model.User;
 import repository.UserRepository;
-import repository.io.JavaIOUserRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class UserController {
     private final UserRepository userRepository;
-    private static UserController instance;
-
-    public static UserController getInstance() {
-        if (instance == null) {
-            instance = new UserController(JavaIOUserRepository.getInstance());
-        }
-        return instance;
-    }
 
     private UserController(UserRepository userRepository) {
         this.userRepository = userRepository;

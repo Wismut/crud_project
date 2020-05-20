@@ -16,23 +16,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JavaIOUserRepository implements UserRepository {
-    private final String USER_REPOSITORY_PATH = REPOSITORY_PATH + "/users.txt";
+    private final String USER_REPOSITORY_PATH = TXT_REPOSITORY_PATH + "/users.txt";
     private final String POST_IDS_DELIMITER = "_";
     private final GenericRepository<Post, Long> postRepository;
     private final GenericRepository<Region, Long> regionRepository;
-    private static UserRepository instance;
 
-    private JavaIOUserRepository(GenericRepository<Post, Long> postRepository, GenericRepository<Region, Long> regionRepository) {
+    public JavaIOUserRepository(GenericRepository<Post, Long> postRepository, GenericRepository<Region, Long> regionRepository) {
         this.postRepository = postRepository;
         this.regionRepository = regionRepository;
-    }
-
-    public static UserRepository getInstance() {
-        if (instance == null) {
-            instance = new JavaIOUserRepository(JavaIOPostRepository.getInstance(),
-                    JavaIORegionRepository.getInstance());
-        }
-        return instance;
     }
 
     @Override

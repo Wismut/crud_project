@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CsvPostRepositoryImpl implements PostRepository {
-    private static final String POST_REPOSITORY_PATH = REPOSITORY_PATH + "/posts.csv";
+    private static final String POST_REPOSITORY_PATH = CSV_REPOSITORY_PATH + "/posts.csv";
 
     @Override
     public Optional<Post> getById(Long id) {

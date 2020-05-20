@@ -1,5 +1,6 @@
 package runner;
 
+import factory.ComponentFactory;
 import model.Post;
 import model.Region;
 import model.User;
@@ -7,7 +8,6 @@ import repository.GenericRepository;
 import repository.io.JavaIOPostRepository;
 import repository.io.JavaIORegionRepository;
 import repository.io.JavaIOUserRepository;
-import view.MainView;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,15 +18,15 @@ import java.util.Collections;
 
 public class Runner {
     public static void main(String[] args) throws IOException {
-        new MainView().run();
+//        new MainView().run();
 
-//        test();
+        test();
     }
 
     private static void test() throws IOException {
-        GenericRepository<Region, Long> regionRepository = JavaIORegionRepository.getInstance();
-        GenericRepository<Post, Long> postRepository = JavaIOPostRepository.getInstance();
-        GenericRepository<User, Long> userRepository = JavaIOUserRepository.getInstance();
+        GenericRepository<Region, Long> regionRepository = ComponentFactory.getBy(JavaIORegionRepository.class);
+        GenericRepository<Post, Long> postRepository = ComponentFactory.getBy(JavaIOPostRepository.class);
+        GenericRepository<User, Long> userRepository = ComponentFactory.getBy(JavaIOUserRepository.class);
         testRegions(regionRepository);
         testPosts(postRepository);
         testUsers(userRepository);

@@ -10,16 +10,8 @@ import java.util.Optional;
 
 public class RegionView implements View {
     private final RegionController regionController;
-    private static RegionView instance;
 
-    public static RegionView getInstance() {
-        if (instance == null) {
-            instance = new RegionView(RegionController.getInstance());
-        }
-        return instance;
-    }
-
-    private RegionView(RegionController regionController) {
+    public RegionView(RegionController regionController) {
         this.regionController = regionController;
     }
 

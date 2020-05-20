@@ -16,18 +16,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class JavaIORegionRepository implements RegionRepository {
-    private final String REGION_REPOSITORY_PATH = REPOSITORY_PATH + "/regions.txt";
-    private static RegionRepository instance;
+    private final String REGION_REPOSITORY_PATH = TXT_REPOSITORY_PATH + "/regions.txt";
 
-    private JavaIORegionRepository() {
+    public JavaIORegionRepository() {
 
-    }
-
-    public static RegionRepository getInstance() {
-        if (instance == null) {
-            instance = new JavaIORegionRepository();
-        }
-        return instance;
     }
 
     @Override

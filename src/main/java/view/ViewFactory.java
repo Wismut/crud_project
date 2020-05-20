@@ -1,20 +1,22 @@
 package view;
 
 
+import factory.ComponentFactory;
+
 public class ViewFactory {
     public static View create(String type) {
         switch (type) {
             case View.USER_NUMBER:
             case View.USER_LETTER:
-                return UserView.getInstance();
+                return ComponentFactory.getBy(UserView.class);
             case View.POST_NUMBER:
             case View.POST_LETTER:
-                return PostView.getInstance();
+                return ComponentFactory.getBy(PostView.class);
             case View.REGION_NUMBER:
             case View.REGION_LETTER:
-                return RegionView.getInstance();
+                return ComponentFactory.getBy(RegionView.class);
             default:
-                return null;
+                throw new RuntimeException("Unknown view type: " + type);
         }
     }
 }
