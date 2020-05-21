@@ -5,6 +5,9 @@ import model.Post;
 import model.Region;
 import model.User;
 import repository.GenericRepository;
+import repository.PostRepository;
+import repository.RegionRepository;
+import repository.UserRepository;
 import repository.io.JavaIOPostRepository;
 import repository.io.JavaIORegionRepository;
 import repository.io.JavaIOUserRepository;
@@ -24,9 +27,9 @@ public class Runner {
     }
 
     private static void test() throws IOException {
-        GenericRepository<Region, Long> regionRepository = ComponentFactory.getBy(JavaIORegionRepository.class);
-        GenericRepository<Post, Long> postRepository = ComponentFactory.getBy(JavaIOPostRepository.class);
-        GenericRepository<User, Long> userRepository = ComponentFactory.getBy(JavaIOUserRepository.class);
+        RegionRepository regionRepository = ComponentFactory.getBy(JavaIORegionRepository.class);
+        PostRepository postRepository = ComponentFactory.getBy(JavaIOPostRepository.class);
+        UserRepository userRepository = ComponentFactory.getBy(JavaIOUserRepository.class);
         testRegions(regionRepository);
         testPosts(postRepository);
         testUsers(userRepository);
@@ -57,7 +60,7 @@ public class Runner {
         System.out.println(regionRepository.getById(3L));
         System.out.println("All regions:");
         System.out.println(regionRepository.getAll());
-        Files.write(Paths.get("src/main/resources/files/regions.txt"), "1,UA\n2,YTR\n3,UK\n".getBytes());
+        Files.write(Paths.get("src/main/resources/files/txt/regions.txt"), "1,UA\n2,YTR\n3,UK\n".getBytes());
         System.out.println();
     }
 
@@ -86,7 +89,7 @@ public class Runner {
         System.out.println(postRepository.getById(3L));
         System.out.println("All posts:");
         System.out.println(postRepository.getAll());
-        Files.write(Paths.get("src/main/resources/files/posts.txt"),
+        Files.write(Paths.get("src/main/resources/files/txt/posts.txt"),
                 "1,content1,1587897426,1587897428\n2,content2,1587893426,1587893428\n3,content3,1587887426,1587887429\n".getBytes());
         System.out.println();
     }
@@ -116,7 +119,7 @@ public class Runner {
         System.out.println(userRepository.getById(3L));
         System.out.println("All users:");
         System.out.println(userRepository.getAll());
-        Files.write(Paths.get("src/main/resources/files/users.txt"),
+        Files.write(Paths.get("src/main/resources/files/txt/users.txt"),
                 "1,user1,surname1,{1_3},1\n2,user2,sn2,{1},2\n3,third_user,lastname,{3},1\n4,name,name,{2},3\n".getBytes());
         System.out.println();
     }

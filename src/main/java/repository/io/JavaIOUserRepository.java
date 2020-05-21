@@ -3,7 +3,8 @@ package repository.io;
 import model.Post;
 import model.Region;
 import model.User;
-import repository.GenericRepository;
+import repository.PostRepository;
+import repository.RegionRepository;
 import repository.UserRepository;
 
 import java.io.BufferedWriter;
@@ -18,10 +19,10 @@ import java.util.stream.Stream;
 public class JavaIOUserRepository implements UserRepository {
     private final String USER_REPOSITORY_PATH = TXT_REPOSITORY_PATH + "/users.txt";
     private final String POST_IDS_DELIMITER = "_";
-    private final GenericRepository<Post, Long> postRepository;
-    private final GenericRepository<Region, Long> regionRepository;
+    private final PostRepository postRepository;
+    private final RegionRepository regionRepository;
 
-    public JavaIOUserRepository(GenericRepository<Post, Long> postRepository, GenericRepository<Region, Long> regionRepository) {
+    public JavaIOUserRepository(PostRepository postRepository, RegionRepository regionRepository) {
         this.postRepository = postRepository;
         this.regionRepository = regionRepository;
     }

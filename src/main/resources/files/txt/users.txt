@@ -1,9 +1,4 @@
 1,user1,surname1,{1_3},1
 2,user2,sn2,{1},2
-5,fn,ln,{2},2
-6,name_random,smth,{},3
-7,fn,ln,{2},2
-8,name_random,smth,{},3
-9,fn,ln,{2},2
-10,name_random,smth,{},3
-3,name,surname,{1},2
+3,third_user,lastname,{3},1
+4,name,name,{2},3
