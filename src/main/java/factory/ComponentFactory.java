@@ -1,5 +1,6 @@
 package factory;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,17 +18,18 @@ public class ComponentFactory {
 
     private static <T> void putConstructorParamsIfAbsent(Class<T> clazz) throws ReflectiveOperationException {
         if (clazz.getConstructors() != null && clazz.getConstructors().length != 0) {
-            if (clazz.getConstructors()[0].getParameterCount() == 0) {
+            Constructor<?> mainConstructor = clazz.getConstructors()[0];
+            if (mainConstructor.getParameterCount() == 0) {
                 componentByClass.putIfAbsent(getKeyBy(clazz), clazz.newInstance());
             } else {
-                for (Class<?> parameterType : clazz.getConstructors()[0].getParameterTypes()) {
+                for (Class<?> parameterType : mainConstructor.getParameterTypes()) {
                     putConstructorParamsIfAbsent(parameterType);
                 }
-                Object[] objects = new Object[clazz.getConstructors()[0].getParameterCount()];
-                for (int i = 0; i < clazz.getConstructors()[0].getParameterCount(); i++) {
-                    objects[i] = componentByClass.get(clazz.getConstructors()[0].getParameterTypes()[i]);
+                Object[] objects = new Object[mainConstructor.getParameterCount()];
+                for (int i = 0; i < mainConstructor.getParameterCount(); i++) {
+                    objects[i] = componentByClass.get(mainConstructor.getParameterTypes()[i]);
                 }
-                componentByClass.putIfAbsent(getKeyBy(clazz), clazz.getConstructor(clazz.getConstructors()[0].getParameterTypes())
+                componentByClass.putIfAbsent(getKeyBy(clazz), clazz.getConstructor(mainConstructor.getParameterTypes())
                         .newInstance(objects));
             }
         }
