@@ -84,7 +84,7 @@ public class Runner {
         System.out.println("Post with id = 3 before update:");
         System.out.println(postRepository.getById(3L));
         System.out.println("Update with id = 3");
-        postRepository.update(new Post(3L, "new content"));
+        postRepository.update(new Post(3L, "new content", LocalDateTime.now().minusDays(1), LocalDateTime.now()));
         System.out.println("Post with id = 3 after update:");
         System.out.println(postRepository.getById(3L));
         System.out.println("All posts:");
