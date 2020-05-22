@@ -9,7 +9,7 @@ import java.util.Optional;
 public class UserController {
     private final UserRepository userRepository;
 
-    private UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -25,7 +25,7 @@ public class UserController {
         return userRepository.update(user);
     }
 
-    public Optional<User> getById(Long id){
+    public Optional<User> getById(Long id) {
         return userRepository.getById(id);
     }
 

@@ -40,7 +40,7 @@ public class MainView {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new RuntimeException("Can't read view type");
     }
 
     public static BufferedReader getReader() {

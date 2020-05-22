@@ -34,7 +34,7 @@ public interface View {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new RuntimeException("Can't get command");
     }
 
     void execute(Command command);

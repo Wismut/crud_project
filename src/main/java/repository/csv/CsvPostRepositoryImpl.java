@@ -3,16 +3,16 @@ package repository.csv;
 import model.Post;
 import repository.PostRepository;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CsvPostRepositoryImpl implements PostRepository {
@@ -29,22 +29,43 @@ public class CsvPostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> getAll() {
-        return null;
+        return getAllPosts();
     }
 
     @Override
     public Post save(Post post) {
-        return null;
+        Objects.requireNonNull(post);
+        Long newId = createIdForNewRecord();
+        post.setId(newId);
+        writeToDatabase(Collections.singletonList(post), StandardOpenOption.APPEND);
+        return post;
     }
 
     @Override
     public void deleteBy(Long id) {
-
+        Objects.requireNonNull(id);
+        List<Post> filteredPosts = getAllPosts()
+                .stream()
+                .filter(p -> !id.equals(p.getId()))
+                .collect(Collectors.toList());
+        writeToDatabase(filteredPosts);
     }
 
     @Override
     public Post update(Post post) {
-        return null;
+        Objects.requireNonNull(post);
+        Objects.requireNonNull(post.getId());
+        Optional<Post> oldPost = getPostById(post.getId());
+        if (!oldPost.isPresent()) {
+            return post;
+        }
+        List<Post> filteredPosts = getAllPosts()
+                .stream()
+                .filter(p -> !post.getId().equals(p.getId()))
+                .collect(Collectors.toList());
+        filteredPosts.add(merge(oldPost.get(), post));
+        writeToDatabase(filteredPosts);
+        return post;
     }
 
     private Optional<Post> getPostById(Long id) {
@@ -78,8 +99,63 @@ public class CsvPostRepositoryImpl implements PostRepository {
         return Collections.emptyList();
     }
 
+    private void writeToDatabase(List<Post> posts, StandardOpenOption... openOptions) {
+        try (BufferedWriter writer =
+                     Files.newBufferedWriter(Paths.get(POST_REPOSITORY_PATH), openOptions)) {
+            StringJoiner stringJoiner;
+            for (Post post : posts) {
+                stringJoiner = new StringJoiner(DELIMITER);
+                stringJoiner
+                        .add(post.getId().toString())
+                        .add(post.getContent())
+                        .add(post.getCreated() == null ?
+                                String.valueOf(convertLocalDateTimeToSeconds(LocalDateTime.now())) :
+                                String.valueOf(convertLocalDateTimeToSeconds(post.getCreated())))
+                        .add(post.getUpdated() == null ?
+                                String.valueOf(convertLocalDateTimeToSeconds(LocalDateTime.now())) :
+                                String.valueOf(convertLocalDateTimeToSeconds(post.getUpdated())));
+                writer.write(stringJoiner.toString());
+                writer.newLine();
+                writer.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Long createIdForNewRecord() {
+        Optional<Long> result = getAllIds()
+                .stream()
+                .max(Long::compare);
+        return result.map(x -> x + 1).orElse(1L);
+    }
+
+    private List<Long> getAllIds() {
+        return getAllPosts()
+                .stream()
+                .map(Post::getId)
+                .collect(Collectors.toList());
+    }
+
     private LocalDateTime convertMillisecondsToLocalDateTime(long seconds) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(seconds * 1000),
                 ZoneId.of(ZoneOffset.UTC.getId()));
+    }
+
+    private long convertLocalDateTimeToSeconds(LocalDateTime dateTime) {
+        return dateTime.toEpochSecond(ZoneOffset.UTC);
+    }
+
+    private Post merge(Post oldPost, Post newPost) {
+        if (newPost.getContent() == null) {
+            newPost.setContent(oldPost.getContent());
+        }
+        if (newPost.getCreated() == null) {
+            newPost.setCreated(oldPost.getCreated());
+        }
+        if (newPost.getUpdated() == null) {
+            newPost.setUpdated(oldPost.getUpdated());
+        }
+        return newPost;
     }
 }

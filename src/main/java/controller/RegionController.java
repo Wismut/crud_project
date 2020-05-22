@@ -9,7 +9,7 @@ import java.util.Optional;
 public class RegionController {
     private final RegionRepository regionRepository;
 
-    private RegionController(RegionRepository regionRepository) {
+    public RegionController(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
     }
 
