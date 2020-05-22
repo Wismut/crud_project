@@ -11,6 +11,7 @@ import repository.UserRepository;
 import repository.io.JavaIOPostRepository;
 import repository.io.JavaIORegionRepository;
 import repository.io.JavaIOUserRepository;
+import view.MainView;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,9 +22,9 @@ import java.util.Collections;
 
 public class Runner {
     public static void main(String[] args) throws IOException {
-//        new MainView().run();
+        new MainView().run();
 
-        test();
+//        test();
     }
 
     private static void test() throws IOException {

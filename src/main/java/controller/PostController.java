@@ -2,24 +2,15 @@ package controller;
 
 import model.Post;
 import repository.PostRepository;
-import repository.io.JavaIOPostRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class PostController {
     private final PostRepository postRepository;
-    private static PostController instance;
 
-    private PostController(PostRepository postRepository) {
+    public PostController(PostRepository postRepository) {
         this.postRepository = postRepository;
-    }
-
-    public static PostController getInstance() {
-        if (instance == null) {
-            instance = new PostController(JavaIOPostRepository.getInstance());
-        }
-        return instance;
     }
 
     public Post save(Post post) {
