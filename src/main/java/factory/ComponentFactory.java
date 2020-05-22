@@ -9,21 +9,20 @@ import java.util.*;
 
 public class ComponentFactory {
     private static final Map<Class, Object> componentByClass = new HashMap<>();
+    private static final String[] layouts = {"repository\\csv", "controller", "view"};
 
     static {
-        List<Class> classes = new ArrayList<>();
         try {
-            classes.addAll(getClasses(ComponentFactory.class.getClassLoader(), "controller"));
-            classes.addAll(getClasses(ComponentFactory.class.getClassLoader(), "repository\\csv"));
+            for (String layout : layouts) {
+                createAndPutComponentsFrom(getClasses(ComponentFactory.class.getClassLoader(), layout));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Collections.sort(classes, (o1, o2) -> o1.getConstructors()[0].getParameterCount() - o2.getConstructors()[0].getParameterCount());
-        classes.forEach(ComponentFactory::putConstructorParamsIfAbsent);
     }
 
     public static <T> T getBy(Class<T> clazz) {
-        putConstructorParamsIfAbsent(clazz);
+//        putConstructorParamsIfAbsent(clazz);
         return clazz.cast(componentByClass.get(getKeyBy(clazz)));
     }
 
@@ -66,11 +65,16 @@ public class ComponentFactory {
             DataInputStream dis = new DataInputStream((InputStream) upackage.getContent());
             String line;
             while ((line = dis.readLine()) != null) {
-                if (line.endsWith(".class")) {
+                if (line.endsWith(".class") && !line.contains("$")) {
                     classes.add(Class.forName(dottedCurrentPackage + "." + line.substring(0, line.lastIndexOf('.'))));
                 }
             }
         }
         return classes;
+    }
+
+    private static void createAndPutComponentsFrom(List<Class> classes) {
+        Collections.sort(classes, (o1, o2) -> o1.getConstructors()[0].getParameterCount() - o2.getConstructors()[0].getParameterCount());
+        classes.forEach(ComponentFactory::putConstructorParamsIfAbsent);
     }
 }

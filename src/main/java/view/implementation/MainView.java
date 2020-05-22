@@ -1,7 +1,9 @@
-package view;
+package view.implementation;
 
 
 import command.Command;
+import view.View;
+import view.ViewFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
