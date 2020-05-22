@@ -58,7 +58,7 @@ public class ComponentFactory {
         return clazz.getInterfaces().length == 0 ? clazz : clazz.getInterfaces()[0];
     }
 
-    public static List<Class> getClasses(ClassLoader cl, String currentPackage) {
+    private static List<Class> getClasses(ClassLoader cl, String currentPackage) {
         List<Class> classes = new ArrayList<>();
         URL upackage = cl.getResource(currentPackage);
         String dottedCurrentPackage = currentPackage.replace('\\', '.');
