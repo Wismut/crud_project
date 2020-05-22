@@ -158,4 +158,12 @@ public class CsvPostRepositoryImpl implements PostRepository {
         }
         return newPost;
     }
+
+    @Override
+    public List<Post> getByContentPart(String contentPart) {
+        Objects.requireNonNull(contentPart);
+        return getAllPosts().stream()
+                .filter(p -> p.getContent().contains(contentPart))
+                .collect(Collectors.toList());
+    }
 }

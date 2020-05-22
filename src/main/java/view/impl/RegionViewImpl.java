@@ -107,4 +107,9 @@ public class RegionViewImpl implements RegionView {
                 throw new RuntimeException("Unknown operation: " + command);
         }
     }
+
+    @Override
+    public void printActionsInfo() {
+
+    }
 }

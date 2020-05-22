@@ -2,7 +2,7 @@ package command;
 
 
 public enum Command {
-    UPDATE("u"), DELETE_BY_ID("d"), SAVE("s"), GET_BY_ID("g"), GET_ALL("a");
+    UPDATE("u"), DELETE_BY_ID("d"), SAVE("s"), GET_BY_ID("g"), GET_ALL("a"), GET_BY_CONTENT("c");
 
     private String shortCutLetter;
 

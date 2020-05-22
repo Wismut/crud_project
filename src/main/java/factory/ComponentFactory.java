@@ -1,7 +1,9 @@
 package factory;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -32,7 +34,7 @@ public class ComponentFactory {
                 try {
                     componentByClass.putIfAbsent(getKeyBy(clazz), clazz.newInstance());
                 } catch (InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             } else {
                 for (Class<?> parameterType : mainConstructor.getParameterTypes()) {
@@ -46,7 +48,7 @@ public class ComponentFactory {
                     componentByClass.putIfAbsent(getKeyBy(clazz), clazz.getConstructor(mainConstructor.getParameterTypes())
                             .newInstance(objects));
                 } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -56,17 +58,21 @@ public class ComponentFactory {
         return clazz.getInterfaces().length == 0 ? clazz : clazz.getInterfaces()[0];
     }
 
-    public static List<Class> getClasses(ClassLoader cl, String currentPackage) throws Exception {
+    public static List<Class> getClasses(ClassLoader cl, String currentPackage) {
         List<Class> classes = new ArrayList<>();
         URL upackage = cl.getResource(currentPackage);
         String dottedCurrentPackage = currentPackage.replace('\\', '.');
         if (upackage != null) {
-            DataInputStream dis = new DataInputStream((InputStream) upackage.getContent());
-            String line;
-            while ((line = dis.readLine()) != null) {
-                if (line.endsWith(".class") && !line.contains("$")) {
-                    classes.add(Class.forName(dottedCurrentPackage + "." + line.substring(0, line.lastIndexOf('.'))));
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader((InputStream) upackage.getContent()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.endsWith(".class") && !line.contains("$")) {
+                        classes.add(Class.forName(dottedCurrentPackage + "." + line.substring(0, line.lastIndexOf('.'))));
+                    }
                 }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
         return classes;

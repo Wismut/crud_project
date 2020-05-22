@@ -132,4 +132,9 @@ public class UserViewImpl implements UserView {
                 throw new RuntimeException("Unknown operation: " + command);
         }
     }
+
+    @Override
+    public void printActionsInfo() {
+
+    }
 }

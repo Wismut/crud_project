@@ -2,6 +2,8 @@ package repository;
 
 import model.Post;
 
-public interface PostRepository extends GenericRepository<Post, Long> {
+import java.util.List;
 
+public interface PostRepository extends GenericRepository<Post, Long> {
+    List<Post> getByContentPart(String contentPart);
 }

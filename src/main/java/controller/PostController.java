@@ -32,4 +32,8 @@ public class PostController {
     public Optional<Post> getById(Long id) {
         return postRepository.getById(id);
     }
+
+    public List<Post> getAllByContentPart(String contentPart) {
+        return postRepository.getByContentPart(contentPart);
+    }
 }

@@ -5,6 +5,7 @@ import command.Command;
 import controller.PostController;
 import model.Post;
 import view.PostView;
+import view.View;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -77,7 +78,7 @@ public class PostViewImpl implements PostView {
         }
     }
 
-    private void getOneAndPrint() {
+    private void getOneByIdAndPrint() {
         String id = null;
         try {
             System.out.println("Type post id");
@@ -91,6 +92,23 @@ public class PostViewImpl implements PostView {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Post with id = " + id + " wasn't found");
+        }
+    }
+
+    private void getAllByContentAndPrint() {
+        String contentPart = null;
+        try {
+            System.out.println("Type content");
+            contentPart = MainView.getReader().readLine();
+            List<Post> post = postController.getAllByContentPart(contentPart);
+            if (!post.isEmpty()) {
+                System.out.println(post);
+            } else {
+                System.out.println("Posts with content '" + contentPart + "' wasn't found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Posts with content '" + contentPart + "' wasn't found");
         }
     }
 
@@ -116,7 +134,10 @@ public class PostViewImpl implements PostView {
                 updateAndPrint();
                 return;
             case GET_BY_ID:
-                getOneAndPrint();
+                getOneByIdAndPrint();
+                return;
+            case GET_BY_CONTENT:
+                getAllByContentAndPrint();
                 return;
             case GET_ALL:
                 getAllAndPrint();
@@ -124,5 +145,10 @@ public class PostViewImpl implements PostView {
             default:
                 throw new RuntimeException("Unknown operation: " + command);
         }
+    }
+
+    @Override
+    public void printActionsInfo() {
+        System.out.println("Type " + View.GET_BY_CONTENT_COMMAND_LETTER + " if you want to get all records with some content from the database");
     }
 }
