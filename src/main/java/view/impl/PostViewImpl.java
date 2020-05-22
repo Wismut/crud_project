@@ -1,4 +1,4 @@
-package view.implementation;
+package view.impl;
 
 
 import command.Command;

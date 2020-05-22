@@ -2,9 +2,9 @@ package view;
 
 
 import factory.ComponentFactory;
-import view.implementation.PostViewImpl;
-import view.implementation.RegionViewImpl;
-import view.implementation.UserViewImpl;
+import view.impl.PostViewImpl;
+import view.impl.RegionViewImpl;
+import view.impl.UserViewImpl;
 
 public class ViewFactory {
     public static View create(String type) {

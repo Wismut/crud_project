@@ -2,7 +2,7 @@ package view;
 
 
 import command.Command;
-import view.implementation.MainView;
+import view.impl.MainView;
 
 import java.io.IOException;
 

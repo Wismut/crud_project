@@ -11,7 +11,7 @@ import repository.UserRepository;
 import repository.io.JavaIOPostRepository;
 import repository.io.JavaIORegionRepository;
 import repository.io.JavaIOUserRepository;
-import view.implementation.MainView;
+import view.impl.MainView;
 
 import java.io.IOException;
 import java.nio.file.Files;

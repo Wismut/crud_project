@@ -9,7 +9,7 @@ import java.util.*;
 
 public class ComponentFactory {
     private static final Map<Class, Object> componentByClass = new HashMap<>();
-    private static final String[] layouts = {"repository\\csv", "controller", "view"};
+    private static final String[] layouts = {"repository\\csv", "controller", "view\\impl"};
 
     static {
         try {
@@ -22,11 +22,10 @@ public class ComponentFactory {
     }
 
     public static <T> T getBy(Class<T> clazz) {
-//        putConstructorParamsIfAbsent(clazz);
         return clazz.cast(componentByClass.get(getKeyBy(clazz)));
     }
 
-    private static <T> void putConstructorParamsIfAbsent(Class<T> clazz) {
+    private static <T> void putClassAndInstance(Class<T> clazz) {
         if (clazz.getConstructors() != null && clazz.getConstructors().length != 0) {
             Constructor<?> mainConstructor = clazz.getConstructors()[0];
             if (mainConstructor.getParameterCount() == 0) {
@@ -37,7 +36,7 @@ public class ComponentFactory {
                 }
             } else {
                 for (Class<?> parameterType : mainConstructor.getParameterTypes()) {
-                    putConstructorParamsIfAbsent(parameterType);
+                    putClassAndInstance(parameterType);
                 }
                 Object[] objects = new Object[mainConstructor.getParameterCount()];
                 for (int i = 0; i < mainConstructor.getParameterCount(); i++) {
@@ -75,6 +74,6 @@ public class ComponentFactory {
 
     private static void createAndPutComponentsFrom(List<Class> classes) {
         Collections.sort(classes, (o1, o2) -> o1.getConstructors()[0].getParameterCount() - o2.getConstructors()[0].getParameterCount());
-        classes.forEach(ComponentFactory::putConstructorParamsIfAbsent);
+        classes.forEach(ComponentFactory::putClassAndInstance);
     }
 }

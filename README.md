@@ -44,13 +44,18 @@ The result of the task should be a separate repository with a README.md file tha
                ├── java
                     ├── command          # Actions with database
                     ├── controller       # Controllers layout
+                    ├── factory          # DI container
                     ├── model            # Models layout
                     ├── repository       # Repositories layout
+                         ├── csv         # CSV implementations of repositories
                          └── io          # IO implementations of repositories
                     ├── runner           # Class with main method
                     └── view             # Views layout
+                         └── impl        # Views implementations
           ├── resources                  # Resources
                └── files                 # Data warehouse
+                    ├── csv              # CSV data warehouses
+                    └── io               # TXT data warehouses
      ├── .gitignore
      └── README.md
 
@@ -72,4 +77,4 @@ https://github.com/Wismut/crud_project
 
 ```java -cp src\main\java\ runner.Runner```
 
-And follow the instractions in the console
+And follow the instructions in the console
